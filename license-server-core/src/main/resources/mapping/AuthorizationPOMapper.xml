@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yozosoft.licenseserver.dao.AuthorizationPOMapper">
+  <resultMap id="BaseResultMap" type="com.yozosoft.licenseserver.model.po.AuthorizationPO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
+    <result column="customer_region" jdbcType="VARCHAR" property="customerRegion" />
+    <result column="customer_date" jdbcType="TIMESTAMP" property="customerDate" />
+    <result column="customer_remark" jdbcType="VARCHAR" property="customerRemark" />
+    <result column="saler_name" jdbcType="VARCHAR" property="salerName" />
+    <result column="saler_mail" jdbcType="VARCHAR" property="salerMail" />
+    <result column="saler_phone" jdbcType="VARCHAR" property="salerPhone" />
+    <result column="cdkey_id" jdbcType="BIGINT" property="cdkeyId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <resultMap id="AuthInfoResultMap" type="com.yozosoft.licenseserver.model.dto.AuthorizationInfoDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
+    <result column="customer_region" jdbcType="VARCHAR" property="customerRegion" />
+    <result column="customer_date" jdbcType="TIMESTAMP" property="customerDate" />
+    <result column="customer_remark" jdbcType="VARCHAR" property="customerRemark" />
+    <result column="saler_name" jdbcType="VARCHAR" property="salerName" />
+    <result column="saler_mail" jdbcType="VARCHAR" property="salerMail" />
+    <result column="saler_phone" jdbcType="VARCHAR" property="salerPhone" />
+    <result column="cdkey_id" jdbcType="BIGINT" property="cdkeyId" />
+    <result column="cdkStatus" jdbcType="TINYINT" property="cdkStatus" />
+    <result column="cdkey" jdbcType="VARCHAR" property="cdkey" />
+    <result column="cdk_create_time" jdbcType="TIMESTAMP" property="cdkCreateTime" />
+    <result column="machine" jdbcType="VARCHAR" property="machine" />
+    <result column="producer" jdbcType="VARCHAR" property="producer" />
+    <result column="product" jdbcType="TINYINT" property="product" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="cdk_type" jdbcType="TINYINT" property="cdkType" />
+    <result column="mode" jdbcType="TINYINT" property="mode" />
+    <result column="expire_num" jdbcType="INTEGER" property="expireNum" />
+    <result column="expire_unit" jdbcType="TINYINT" property="expireUnit" />
+    <result column="expire_date" jdbcType="TIMESTAMP" property="expireDate" />
+    <result column="permit_num" jdbcType="INTEGER" property="permitNum" />
+    <result column="heart_rate_num" jdbcType="INTEGER" property="heartRateNum" />
+    <result column="heart_rate_unit" jdbcType="TINYINT" property="heartRateUnit" />
+    <result column="surplus" jdbcType="INTEGER" property="surplus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, update_time, status, customer_name, customer_region, customer_date, 
+    customer_remark, saler_name, saler_mail, saler_phone, cdkey_id, remark
+  </sql>
+  <sql id="Auth_Info_Column_List">
+    authorization.id, authorization.status, authorization.customer_name, authorization.customer_region, authorization.customer_date,
+    authorization.customer_remark, authorization.saler_name, authorization.saler_mail, authorization.saler_phone, authorization.cdkey_id,
+    cdkey.status as cdkStatus, cdkey.cdkey, cdkey.cdk_create_time, cdkey.machine, cdkey.producer,
+    cdkey.product, cdkey.version, cdkey.region, cdkey.cdk_type, cdkey.mode, cdkey.expire_num, cdkey.expire_unit, cdkey.expire_date, cdkey.permit_num,
+    cdkey.heart_rate_num, cdkey.heart_rate_unit, activation_num.surplus
+  </sql>
+  <sql id="search_condition">
+    <where>
+      <if test="id !=null">
+        AND id = #{id}
+      </if>
+      <if test="customerName != null">
+        AND customer_name = #{customerName}
+      </if>
+      <if test="salerName != null">
+        AND saler_name = #{salerName}
+      </if>
+      <if test="cdkey !=null">
+        AND cdkey = #{cdkey}
+      </if>
+    </where>
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from authorization
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from authorization
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.yozosoft.licenseserver.model.po.AuthorizationPO">
+    insert into authorization
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="customerName != null">
+        customer_name,
+      </if>
+      <if test="customerRegion != null">
+        customer_region,
+      </if>
+      <if test="customerDate != null">
+        customer_date,
+      </if>
+      <if test="customerRemark != null">
+        customer_remark,
+      </if>
+      <if test="salerName != null">
+        saler_name,
+      </if>
+      <if test="salerMail != null">
+        saler_mail,
+      </if>
+      <if test="salerPhone != null">
+        saler_phone,
+      </if>
+      <if test="cdkeyId != null">
+        cdkey_id,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="customerName != null">
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerRegion != null">
+        #{customerRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="customerDate != null">
+        #{customerDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="customerRemark != null">
+        #{customerRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="salerName != null">
+        #{salerName,jdbcType=VARCHAR},
+      </if>
+      <if test="salerMail != null">
+        #{salerMail,jdbcType=VARCHAR},
+      </if>
+      <if test="salerPhone != null">
+        #{salerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="cdkeyId != null">
+        #{cdkeyId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yozosoft.licenseserver.model.po.AuthorizationPO">
+    update authorization
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="customerName != null">
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerRegion != null">
+        customer_region = #{customerRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="customerDate != null">
+        customer_date = #{customerDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="customerRemark != null">
+        customer_remark = #{customerRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="salerName != null">
+        saler_name = #{salerName,jdbcType=VARCHAR},
+      </if>
+      <if test="salerMail != null">
+        saler_mail = #{salerMail,jdbcType=VARCHAR},
+      </if>
+      <if test="salerPhone != null">
+        saler_phone = #{salerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="cdkeyId != null">
+        cdkey_id = #{cdkeyId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectAuthorizationInfoByQuery" parameterType="com.yozosoft.licenseserver.model.qo.AuthorizationInfoQO" resultMap="AuthInfoResultMap">
+    select
+    <include refid="Auth_Info_Column_List" />
+    from authorization
+    left join cdkey on cdkey.id = authorization.cdkey_id
+    left join activation_num on activation_num.cdkey_id = authorization.cdkey_id
+    <include refid="search_condition"/>
+  </select>
+</mapper>

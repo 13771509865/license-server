@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yozosoft.licenseserver.dao.CdKeyPOMapper">
+  <resultMap id="BaseResultMap" type="com.yozosoft.licenseserver.model.po.CdKeyPO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="cdkey" jdbcType="VARCHAR" property="cdkey" />
+    <result column="cdk_create_time" jdbcType="TIMESTAMP" property="cdkCreateTime" />
+    <result column="machine" jdbcType="VARCHAR" property="machine" />
+    <result column="producer" jdbcType="VARCHAR" property="producer" />
+    <result column="product" jdbcType="TINYINT" property="product" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="cdk_type" jdbcType="TINYINT" property="cdkType" />
+    <result column="mode" jdbcType="TINYINT" property="mode" />
+    <result column="expire_num" jdbcType="INTEGER" property="expireNum" />
+    <result column="expire_unit" jdbcType="TINYINT" property="expireUnit" />
+    <result column="expire_date" jdbcType="TIMESTAMP" property="expireDate" />
+    <result column="permit_num" jdbcType="INTEGER" property="permitNum" />
+    <result column="heart_rate_num" jdbcType="INTEGER" property="heartRateNum" />
+    <result column="heart_rate_unit" jdbcType="TINYINT" property="heartRateUnit" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, update_time, status, cdkey, cdk_create_time, machine, producer, 
+    product, version, region, cdk_type, mode, expire_num, expire_unit, expire_date, permit_num,
+    heart_rate_num, heart_rate_unit, remark
+  </sql>
+  <sql id="search_condition">
+    <where>
+      <if test="id !=null">
+        AND id = #{id}
+      </if>
+      <if test="cdkey != null">
+        AND cdkey = #{cdkey}
+      </if>
+      <if test="product != null">
+        AND product = #{product}
+      </if>
+      <if test="version !=null">
+        AND version = #{version}
+      </if>
+      <if test="cdkType != null">
+        AND cdk_type = #{cdkType}
+      </if>
+      <if test="cdkCreateTimeStart!= null">
+        <![CDATA[AND cdk_create_time >= #{cdkCreateTimeStart}]]>
+      </if>
+      <if test="cdkCreateTimeEnd != null">
+        <![CDATA[AND cdk_create_time <= #{cdkCreateTimeEnd}]]>
+      </if>
+    </where>
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cdkey
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cdkey
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.yozosoft.licenseserver.model.po.CdKeyPO">
+    insert into cdkey
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="cdkey != null">
+        cdkey,
+      </if>
+      <if test="cdkCreateTime != null">
+        cdk_create_time,
+      </if>
+      <if test="machine != null">
+        machine,
+      </if>
+      <if test="producer != null">
+        producer,
+      </if>
+      <if test="product != null">
+        product,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="region != null">
+        region,
+      </if>
+      <if test="cdkType != null">
+        cdk_type,
+      </if>
+      <if test="mode != null">
+        mode,
+      </if>
+      <if test="expireNum != null">
+        expire_num,
+      </if>
+      <if test="expireUnit != null">
+        expire_unit,
+      </if>
+      <if test="expireDate != null">
+        expire_date,
+      </if>
+      <if test="permitNum != null">
+        permit_num,
+      </if>
+      <if test="heartRateNum != null">
+        heart_rate_num,
+      </if>
+      <if test="heartRateUnit != null">
+        heart_rate_unit,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="cdkey != null">
+        #{cdkey,jdbcType=VARCHAR},
+      </if>
+      <if test="cdkCreateTime != null">
+        #{cdkCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="machine != null">
+        #{machine,jdbcType=VARCHAR},
+      </if>
+      <if test="producer != null">
+        #{producer,jdbcType=VARCHAR},
+      </if>
+      <if test="product != null">
+        #{product,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="region != null">
+        #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="cdkType != null">
+        #{cdkType,jdbcType=TINYINT},
+      </if>
+      <if test="mode != null">
+        #{mode,jdbcType=TINYINT},
+      </if>
+      <if test="expireNum != null">
+        #{expireNum,jdbcType=INTEGER},
+      </if>
+      <if test="expireUnit != null">
+        #{expireUnit,jdbcType=TINYINT},
+      </if>
+      <if test="expireDate != null">
+        #{expireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="permitNum != null">
+        #{permitNum,jdbcType=INTEGER},
+      </if>
+      <if test="heartRateNum != null">
+        #{heartRateNum,jdbcType=INTEGER},
+      </if>
+      <if test="heartRateUnit != null">
+        #{heartRateUnit,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yozosoft.licenseserver.model.po.CdKeyPO">
+    update cdkey
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="cdkey != null">
+        cdkey = #{cdkey,jdbcType=VARCHAR},
+      </if>
+      <if test="cdkCreateTime != null">
+        cdk_create_time = #{cdkCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="machine != null">
+        machine = #{machine,jdbcType=VARCHAR},
+      </if>
+      <if test="producer != null">
+        producer = #{producer,jdbcType=VARCHAR},
+      </if>
+      <if test="product != null">
+        product = #{product,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="region != null">
+        region = #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="cdkType != null">
+        cdk_type = #{cdkType,jdbcType=TINYINT},
+      </if>
+      <if test="mode != null">
+        mode = #{mode,jdbcType=TINYINT},
+      </if>
+      <if test="expireNum != null">
+        expire_num = #{expireNum,jdbcType=INTEGER},
+      </if>
+      <if test="expireUnit != null">
+        expire_unit = #{expireUnit,jdbcType=TINYINT},
+      </if>
+      <if test="expireDate != null">
+        expire_date = #{expireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="permitNum != null">
+        permit_num = #{permitNum,jdbcType=INTEGER},
+      </if>
+      <if test="heartRateNum != null">
+        heart_rate_num = #{heartRateNum,jdbcType=INTEGER},
+      </if>
+      <if test="heartRateUnit != null">
+        heart_rate_unit = #{heartRateUnit,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByQuery" parameterType="com.yozosoft.licenseserver.model.qo.CdKeyQO" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from cdkey
+    <include refid="search_condition"/>
+  </select>
+  <select id="selectByCdk" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from cdkey
+    where cdkey = #{cdkey,jdbcType=VARCHAR}
+  </select>
+</mapper>

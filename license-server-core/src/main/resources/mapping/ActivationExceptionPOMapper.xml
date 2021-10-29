@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yozosoft.licenseserver.dao.ActivationExceptionPOMapper">
+  <resultMap id="BaseResultMap" type="com.yozosoft.licenseserver.model.po.ActivationExceptionPO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="cdkey_id" jdbcType="BIGINT" property="cdkeyId" />
+    <result column="cdkey" jdbcType="VARCHAR" property="cdkey" />
+    <result column="ip" jdbcType="TINYINT" property="ip" />
+    <result column="mac" jdbcType="VARCHAR" property="mac" />
+    <result column="cpu_id" jdbcType="VARCHAR" property="cpuId" />
+    <result column="bios_id" jdbcType="VARCHAR" property="biosId" />
+    <result column="exception_id" jdbcType="TINYINT" property="exceptionId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, update_time, cdkey_id, cdkey, ip, mac, cpu_id, bios_id, exception_id, 
+    remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from activation_exception_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from activation_exception_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yozosoft.licenseserver.model.po.ActivationExceptionPO">
+    insert into activation_exception_record (id, create_time, update_time, 
+      cdkey_id, cdkey, ip, 
+      mac, cpu_id, bios_id, 
+      exception_id, remark)
+    values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{cdkeyId,jdbcType=BIGINT}, #{cdkey,jdbcType=VARCHAR}, #{ip,jdbcType=TINYINT}, 
+      #{mac,jdbcType=VARCHAR}, #{cpuId,jdbcType=VARCHAR}, #{biosId,jdbcType=VARCHAR}, 
+      #{exceptionId,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yozosoft.licenseserver.model.po.ActivationExceptionPO">
+    insert into activation_exception_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="cdkeyId != null">
+        cdkey_id,
+      </if>
+      <if test="cdkey != null">
+        cdkey,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="mac != null">
+        mac,
+      </if>
+      <if test="cpuId != null">
+        cpu_id,
+      </if>
+      <if test="biosId != null">
+        bios_id,
+      </if>
+      <if test="exceptionId != null">
+        exception_id,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cdkeyId != null">
+        #{cdkeyId,jdbcType=BIGINT},
+      </if>
+      <if test="cdkey != null">
+        #{cdkey,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=TINYINT},
+      </if>
+      <if test="mac != null">
+        #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="cpuId != null">
+        #{cpuId,jdbcType=VARCHAR},
+      </if>
+      <if test="biosId != null">
+        #{biosId,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionId != null">
+        #{exceptionId,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yozosoft.licenseserver.model.po.ActivationExceptionPO">
+    update activation_exception_record
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cdkeyId != null">
+        cdkey_id = #{cdkeyId,jdbcType=BIGINT},
+      </if>
+      <if test="cdkey != null">
+        cdkey = #{cdkey,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=TINYINT},
+      </if>
+      <if test="mac != null">
+        mac = #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="cpuId != null">
+        cpu_id = #{cpuId,jdbcType=VARCHAR},
+      </if>
+      <if test="biosId != null">
+        bios_id = #{biosId,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionId != null">
+        exception_id = #{exceptionId,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yozosoft.licenseserver.model.po.ActivationExceptionPO">
+    update activation_exception_record
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      cdkey_id = #{cdkeyId,jdbcType=BIGINT},
+      cdkey = #{cdkey,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=TINYINT},
+      mac = #{mac,jdbcType=VARCHAR},
+      cpu_id = #{cpuId,jdbcType=VARCHAR},
+      bios_id = #{biosId,jdbcType=VARCHAR},
+      exception_id = #{exceptionId,jdbcType=TINYINT},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

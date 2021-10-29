@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yozosoft.licenseserver.dao.ActivationNumPOMapper">
+  <resultMap id="BaseResultMap" type="com.yozosoft.licenseserver.model.po.ActivationNumPO">
+    <id column="cdkey_id" jdbcType="BIGINT" property="cdkeyId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="permit_num" jdbcType="INTEGER" property="permitNum" />
+    <result column="surplus" jdbcType="INTEGER" property="surplus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cdkey_id, create_time, update_time, status, permit_num, surplus
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from activation_num
+    where cdkey_id = #{cdkeyId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from activation_num
+    where cdkey_id = #{cdkeyId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.yozosoft.licenseserver.model.po.ActivationNumPO">
+    insert into activation_num
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cdkeyId != null">
+        cdkey_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="permitNum != null">
+        permit_num,
+      </if>
+      <if test="surplus != null">
+        surplus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cdkeyId != null">
+        #{cdkeyId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="permitNum != null">
+        #{permitNum,jdbcType=INTEGER},
+      </if>
+      <if test="surplus != null">
+        #{surplus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yozosoft.licenseserver.model.po.ActivationNumPO">
+    update activation_num
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="permitNum != null">
+        permit_num = #{permitNum,jdbcType=INTEGER},
+      </if>
+      <if test="surplus != null">
+        surplus = #{surplus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where cdkey_id = #{cdkeyId,jdbcType=BIGINT}
+  </update>
+  <update id="reduceNum" parameterType="java.lang.Long">
+    update activation_num
+    set surplus = surplus - 1
+    where cdkey_id = #{cdkeyId,jdbcType=BIGINT} and surplus &gt;= 1 and surplus &lt;= permit_num
+  </update>
+  <update id="increaseNum" parameterType="java.lang.Long">
+    update activation_num
+    set surplus = surplus + 1
+    where cdkey_id = #{cdkeyId,jdbcType=BIGINT} and surplus &lt;= permit_num
+  </update>
+</mapper>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yozosoft.licenseserver.dao.ClientInfoPOMapper">
+  <resultMap id="BaseResultMap" type="com.yozosoft.licenseserver.model.po.ClientInfoPO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="cdkey_id" jdbcType="BIGINT" property="cdkeyId" />
+    <result column="cpu_id" jdbcType="VARCHAR" property="cpuId" />
+    <result column="bios_id" jdbcType="VARCHAR" property="biosId" />
+    <result column="mac" jdbcType="VARCHAR" property="mac" />
+    <result column="ip" jdbcType="TINYINT" property="ip" />
+    <result column="expire_date" jdbcType="TIMESTAMP" property="expireDate" />
+  </resultMap>
+  <resultMap id="RegisterResultMap" type="com.yozosoft.licenseserver.dto.ClientRegisterResultDTO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="heart_rate_num" jdbcType="INTEGER" property="heartRateNum" />
+    <result column="heart_rate_unit" jdbcType="TINYINT" property="heartRateUnit" />
+    <result column="expire_date" jdbcType="TIMESTAMP" property="expireDate" />
+    <result column="cdk_type" jdbcType="TINYINT" property="cdkType" />
+    <result column="product" jdbcType="TINYINT" property="product" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, create_time, update_time, status, cdkey_id, cpu_id, bios_id, mac, ip, expire_date
+  </sql>
+  <sql id="Register_Column_List">
+    client_info.id, cdkey.heart_rate_num, cdkey.heart_rate_unit, client_info.expire_date, cdkey.cdk_type,
+    cdkey.product, cdkey.version
+  </sql>
+  <sql id="search_condition">
+    <where>
+      <if test="id !=null">
+        AND id = #{id}
+      </if>
+      <if test="cdkeyId != null">
+        AND cdkey_id = #{cdkeyId}
+      </if>
+      <if test="biosId != null">
+        AND bios_id = #{biosId}
+      </if>
+      <if test="cpuId !=null">
+        AND cpu_id = #{cpuId}
+      </if>
+      <if test="mac != null">
+        AND mac = #{mac}
+      </if>
+      <if test="status != null">
+        AND status = #{status}
+      </if>
+    </where>
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from client_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from client_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.yozosoft.licenseserver.model.po.ClientInfoPO">
+    insert into client_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="cdkeyId != null">
+        cdkey_id,
+      </if>
+      <if test="cpuId != null">
+        cpu_id,
+      </if>
+      <if test="biosId != null">
+        bios_id,
+      </if>
+      <if test="mac != null">
+        mac,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="expireDate != null">
+        expire_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="cdkeyId != null">
+        #{cdkeyId,jdbcType=BIGINT},
+      </if>
+      <if test="cpuId != null">
+        #{cpuId,jdbcType=VARCHAR},
+      </if>
+      <if test="biosId != null">
+        #{biosId,jdbcType=VARCHAR},
+      </if>
+      <if test="mac != null">
+        #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=TINYINT},
+      </if>
+      <if test="expireDate != null">
+        #{expireDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yozosoft.licenseserver.model.po.ClientInfoPO">
+    update client_info
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="cdkeyId != null">
+        cdkey_id = #{cdkeyId,jdbcType=BIGINT},
+      </if>
+      <if test="cpuId != null">
+        cpu_id = #{cpuId,jdbcType=VARCHAR},
+      </if>
+      <if test="biosId != null">
+        bios_id = #{biosId,jdbcType=VARCHAR},
+      </if>
+      <if test="mac != null">
+        mac = #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=TINYINT},
+      </if>
+      <if test="expireDate != null">
+        expire_date = #{expireDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByQuery" parameterType="com.yozosoft.licenseserver.model.qo.ClientInfoQO" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from client_info
+    <include refid="search_condition"/>
+  </select>
+</mapper>
