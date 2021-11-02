@@ -16,6 +16,8 @@ public enum EnumResultCode {
     E_FAIL(1, "operation failed"),
     E_INVALID_PARAM(2, "Parameter verification failed"),
     E_SERVER_UNKNOWN_ERROR(3, "Server unknown error"),
+    E_INVALID_HEADER(4, "Header verification failed"),
+    E_ILLEGAL_REQUEST(5, "Illegal request"),
 
     E_ACTIVATION_ADD_ERROR(10, "failed to enter activation code"),
     E_ACTIVATION_GET_ERROR(11, "failed to query activation code"),
@@ -31,6 +33,13 @@ public enum EnumResultCode {
     E_ACTIVATION_ERROR(25, "activation failed"),
 
     E_ACTIVATION_CONFIRM_ERROR(30, "activation confirm failed"),
+
+    E_HEARTBEAT_ERROR(40, "heartbeat check failed"),
+    E_HEARTBEAT_MACHINE_MISMATCH(41, "heartbeat machine mismatch"),
+    E_HEARTBEAT_PRODUCT_MISMATCH(42, "heartbeat product mismatch"),
+    E_HEARTBEAT_EXPIRED(43, "heartbeat authorization has expired"),
+
+    E_ACCOUNT_LOGIN_ERROR(50, "login failed"),
     ;
 
     private Integer value;

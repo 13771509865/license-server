@@ -102,6 +102,7 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void cancelRegister(Long activationId) {
         IResult<ClientInfoPO> getResult = clientRegisterService.selectClientInfoById(activationId);
         if (!getResult.isSuccess()) {

@@ -13,14 +13,21 @@
     <result column="ip" jdbcType="TINYINT" property="ip" />
     <result column="expire_date" jdbcType="TIMESTAMP" property="expireDate" />
   </resultMap>
-  <resultMap id="RegisterResultMap" type="com.yozosoft.licenseserver.dto.ClientRegisterResultDTO">
+  <resultMap id="CdKeyClientResultMap" type="com.yozosoft.licenseserver.model.dto.CdKeyClientDTO">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="heart_rate_num" jdbcType="INTEGER" property="heartRateNum" />
-    <result column="heart_rate_unit" jdbcType="TINYINT" property="heartRateUnit" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="cdkey_id" jdbcType="BIGINT" property="cdkeyId" />
+    <result column="cpu_id" jdbcType="VARCHAR" property="cpuId" />
+    <result column="bios_id" jdbcType="VARCHAR" property="biosId" />
+    <result column="mac" jdbcType="VARCHAR" property="mac" />
+    <result column="ip" jdbcType="TINYINT" property="ip" />
     <result column="expire_date" jdbcType="TIMESTAMP" property="expireDate" />
-    <result column="cdk_type" jdbcType="TINYINT" property="cdkType" />
     <result column="product" jdbcType="TINYINT" property="product" />
     <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="cdk_type" jdbcType="TINYINT" property="cdkType" />
+    <result column="heart_rate_num" jdbcType="INTEGER" property="heartRateNum" />
+    <result column="heart_rate_unit" jdbcType="TINYINT" property="heartRateUnit" />
   </resultMap>
   <sql id="Base_Column_List">
     id, create_time, update_time, status, cdkey_id, cpu_id, bios_id, mac, ip, expire_date
@@ -28,6 +35,11 @@
   <sql id="Register_Column_List">
     client_info.id, cdkey.heart_rate_num, cdkey.heart_rate_unit, client_info.expire_date, cdkey.cdk_type,
     cdkey.product, cdkey.version
+  </sql>
+  <sql id="CdKeyClient_Column_List">
+    client_info.id, client_info.status, client_info.cdkey_id, client_info.cpu_id, client_info.bios_id,
+    client_info.mac, client_info.ip, client_info.expire_date, cdkey.product, cdkey.version, cdkey.region,
+    cdkey.cdk_type, cdkey.heart_rate_num, cdkey.heart_rate_unit
   </sql>
   <sql id="search_condition">
     <where>
@@ -166,5 +178,12 @@
     <include refid="Base_Column_List"/>
     from client_info
     <include refid="search_condition"/>
+  </select>
+  <select id="selectCdKeyClientById" parameterType="java.lang.Long" resultMap="CdKeyClientResultMap">
+    select
+    <include refid="CdKeyClient_Column_List"/>
+    from client_info
+    left join cdkey on cdkey.id = client_info.cdkey_id
+    where client_info.id = #{id,jdbcType=BIGINT}
   </select>
 </mapper>

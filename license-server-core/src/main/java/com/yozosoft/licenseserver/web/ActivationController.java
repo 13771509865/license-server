@@ -20,7 +20,7 @@ import javax.validation.Valid;
  * @author zhouf
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/admin")
 public class ActivationController {
 
     @Autowired

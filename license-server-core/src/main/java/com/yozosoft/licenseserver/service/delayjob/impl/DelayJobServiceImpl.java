@@ -44,18 +44,19 @@ public class DelayJobServiceImpl implements DelayJobService {
         return remove? DefaultResult.successResult():DefaultResult.failResult();
     }
 
-    //TODO 还没做完
+    //TODO 目前这个模式消费异常了会丢消息，后期可改为延迟的消费队列，保证数据不丢失
     @Override
     public void handlerRegisterDelayJob(){
         RBlockingQueue<Long> blockingQueue = redissonClient.getBlockingQueue(delayQueueName);
         new Thread(()->{
             while (true){
+                Long activationId = null;
                 try{
-                    Long activationId = blockingQueue.take();
+                    activationId = blockingQueue.take();
                     log.info("超时激活,activationId为:"+activationId);
                     clientRegisterManager.cancelRegister(activationId);
                 }catch (Exception e){
-                    log.error("延迟队列消费失败",e);
+                    log.error("延迟队列消费失败,activationId为:"+activationId,e);
                 }
             }
         }).start();

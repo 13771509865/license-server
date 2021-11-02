@@ -1,5 +1,6 @@
 package com.yozosoft.licenseserver.dao;
 
+import com.yozosoft.licenseserver.model.dto.CdKeyClientDTO;
 import com.yozosoft.licenseserver.model.po.ClientInfoPO;
 import com.yozosoft.licenseserver.model.qo.ClientInfoQO;
 
@@ -15,4 +16,6 @@ public interface ClientInfoPOMapper {
     int updateByPrimaryKeySelective(ClientInfoPO record);
 
     List<ClientInfoPO> selectByQuery(ClientInfoQO clientInfoQO);
+
+    CdKeyClientDTO selectCdKeyClientById(Long id);
 }
