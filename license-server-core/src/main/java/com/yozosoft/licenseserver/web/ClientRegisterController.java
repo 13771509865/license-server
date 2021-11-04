@@ -1,7 +1,6 @@
 package com.yozosoft.licenseserver.web;
 
 import com.yozosoft.licenseserver.constant.EnumResultCode;
-import com.yozosoft.licenseserver.dto.AuthHeaderDTO;
 import com.yozosoft.licenseserver.dto.ClientRegisterConfirmDTO;
 import com.yozosoft.licenseserver.dto.ClientRegisterDTO;
 import com.yozosoft.licenseserver.dto.ClientRegisterResultDTO;
@@ -20,7 +19,7 @@ public class ClientRegisterController {
     ClientRegisterManager clientRegisterManager;
 
     @PostMapping("/register")
-    public ResponseEntity clientRegister(@RequestBody @Valid ClientRegisterDTO clientRegisterDTO, @RequestHeader AuthHeaderDTO authHeaderDTO) {
+    public ResponseEntity clientRegister(@RequestBody @Valid ClientRegisterDTO clientRegisterDTO) {
         ClientRegisterResultDTO clientRegisterResultDTO = clientRegisterManager.clientRegister(clientRegisterDTO);
         return ResponseEntity.ok(clientRegisterResultDTO);
     }
