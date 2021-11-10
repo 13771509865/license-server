@@ -10,6 +10,7 @@
     <groupId>com.yozosoft</groupId>
     <artifactId>license-server-core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>license-server-core</name>
     <description>license-server-core</description>
 
