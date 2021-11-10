@@ -192,8 +192,17 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
         if (getResult.isSuccess() && clientInfoPOs != null && clientInfoPOs.size() == 1) {
             //查询到已激活过
             ClientInfoPO clientInfoPO = clientInfoPOs.get(0);
-            if (clientInfoPO.getStatus().equals((byte) 1) && cdKeyPO.getStatus().equals(EnumActivationStatus.E_ACTIVE.getValue()) && DateUtils.truncatedCompareTo(clientInfoPO.getExpireDate(), new Date(), Calendar.MILLISECOND) > 0) {
-                return buildClientRegisterResultDTO(clientInfoPO, cdKeyPO);
+            if (cdKeyPO.getStatus().equals(EnumActivationStatus.E_ACTIVE.getValue()) && DateUtils.truncatedCompareTo(clientInfoPO.getExpireDate(), new Date(), Calendar.MILLISECOND) > 0) {
+                if(clientInfoPO.getStatus().equals((byte) 1) ){
+                    clientInfoPO.setStatus(EnumActivationStatus.E_REACTIVE.getValue());
+                    IResult<Integer> updateResult = clientRegisterService.updateClientInfo(clientInfoPO);
+                    if (!updateResult.isSuccess()) {
+                        log.error("重装激活时,更新clientInfo表status状态失败");
+                    }
+                    return buildClientRegisterResultDTO(clientInfoPO, cdKeyPO);
+                }else if(clientInfoPO.getStatus().equals(EnumActivationStatus.E_REACTIVE.getValue())){
+                    return buildClientRegisterResultDTO(clientInfoPO, cdKeyPO);
+                }
             }
             throw new LicenseException(EnumResultCode.E_REPEAT_ACTIVATION_ERROR);
         }

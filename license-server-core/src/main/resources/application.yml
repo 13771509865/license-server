@@ -72,3 +72,4 @@ management:
       base-path: /actuator   #修改访问路径
       exposure:
         include: "*"           #开放所有页面节点  默认只开启了health、info两个节点
+    enabled-by-default: false
