@@ -45,6 +45,6 @@ public class AuthorizationDTO {
     @NotNull(message = "unit of heart rate is null")
     private Byte heartRateUnit;
 
-    @NotNull(message = "activation mode is null")
-    private Byte mode;
+//    @NotNull(message = "activation mode is null")
+//    private Byte mode;
 }

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.yozosoft.licenseserver.common.util.DefaultResult;
 import com.yozosoft.licenseserver.common.util.IResult;
 import com.yozosoft.licenseserver.constant.EnumResultCode;
+import com.yozosoft.licenseserver.constant.EnumTimeUnit;
 import com.yozosoft.licenseserver.dto.ActivationDTO;
 import com.yozosoft.licenseserver.dto.ActivationQueryDTO;
 import com.yozosoft.licenseserver.model.dto.PageDTO;
@@ -79,6 +80,9 @@ public class ActivationManagerImpl implements ActivationManager {
         cdKeyPO.setRegion(activationDTO.getRegion());
         cdKeyPO.setCdkType(activationDTO.getCdkType());
         cdKeyPO.setMode(activationDTO.getMode());
+        cdKeyPO.setPermitNum(0);
+        cdKeyPO.setHeartRateNum(0);
+        cdKeyPO.setHeartRateUnit(EnumTimeUnit.E_DAY_UNIT.getValue());
         return cdKeyPO;
     }
 }

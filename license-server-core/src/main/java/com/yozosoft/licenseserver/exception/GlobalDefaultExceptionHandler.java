@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author zhoufeng
@@ -37,6 +38,14 @@ public class GlobalDefaultExceptionHandler {
             message.add(error.getDefaultMessage());
         }
         return new ResponseEntity(ResultUtils.buildErrorResult(EnumResultCode.E_INVALID_PARAM.getValue(), StringUtils.join(message, ",")), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(LicenseException.class)
+    @ResponseBody
+    public ResponseEntity LicenseExceptionHandler(LicenseException e) {
+        HttpStatus httpStatus = e.getHttpStatus();
+        httpStatus = Optional.ofNullable(httpStatus).orElse(HttpStatus.EXPECTATION_FAILED);
+        return new ResponseEntity(ResultUtils.buildErrorResult(e.getErrorCode(), e.getErrorMessage(), null), httpStatus);
     }
 
 
