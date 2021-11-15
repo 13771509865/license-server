@@ -61,7 +61,7 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from cdkey
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT} and status &lt;= 1
   </delete>
   <insert id="insertSelective" parameterType="com.yozosoft.licenseserver.model.po.CdKeyPO">
     insert into cdkey

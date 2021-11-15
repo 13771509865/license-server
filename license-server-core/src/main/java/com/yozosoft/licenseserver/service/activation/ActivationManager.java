@@ -12,4 +12,6 @@ public interface ActivationManager {
     IResult<Integer> addActivation(ActivationDTO activationDTO);
 
     IResult<PageInfo<CdKeyPO>> getActivationsByQuery(PageDTO pageDTO, ActivationQueryDTO activationQueryDTO);
+
+    IResult<Integer> deleteActivation(Long id);
 }

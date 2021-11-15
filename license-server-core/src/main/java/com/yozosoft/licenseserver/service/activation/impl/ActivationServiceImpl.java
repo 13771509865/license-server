@@ -23,6 +23,12 @@ public class ActivationServiceImpl implements ActivationService {
     ActivationNumPOMapper activationNumPOMapper;
 
     @Override
+    public IResult<Integer> deleteCdKey(Long id) {
+        int i = cdKeyPOMapper.deleteByPrimaryKey(id);
+        return i > 0 ? DefaultResult.successResult() : DefaultResult.failResult();
+    }
+
+    @Override
     public IResult<Integer> insertCdKey(CdKeyPO cdKeyPO) {
         int i = cdKeyPOMapper.insertSelective(cdKeyPO);
         return i > 0 ? DefaultResult.successResult() : DefaultResult.failResult();

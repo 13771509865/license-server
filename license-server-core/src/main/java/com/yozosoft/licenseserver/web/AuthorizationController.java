@@ -34,7 +34,7 @@ public class AuthorizationController {
     }
 
     @GetMapping("/authorization")
-    public ResponseEntity getAuthorization(@RequestParam @Valid PageDTO pageDTO,@RequestParam AuthorizationQueryDTO authorizationQueryDTO){
+    public ResponseEntity getAuthorization(@Valid PageDTO pageDTO,AuthorizationQueryDTO authorizationQueryDTO){
         IResult<PageInfo<AuthorizationInfoDTO>> getResult = authorizationManager.getAuthorizationInfoByQuery(pageDTO, authorizationQueryDTO);
         if(!getResult.isSuccess()){
             throw new LicenseException(EnumResultCode.E_AUTHORIZATION_GET_ERROR);

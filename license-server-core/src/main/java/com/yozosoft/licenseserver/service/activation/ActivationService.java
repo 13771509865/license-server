@@ -14,6 +14,8 @@ import java.util.List;
  */
 public interface ActivationService {
 
+    IResult<Integer> deleteCdKey(Long id);
+
     IResult<Integer> insertCdKey(CdKeyPO cdKeyPO);
 
     IResult<List<CdKeyPO>> selectCdKeyByQuery(CdKeyQO cdKeyQO);

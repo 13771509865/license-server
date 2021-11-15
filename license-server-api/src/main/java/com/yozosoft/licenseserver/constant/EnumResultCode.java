@@ -24,6 +24,7 @@ public enum EnumResultCode {
     E_AUTHORIZATION_ADD_ERROR(12, "failed to enter authorization"),
     E_AUTHORIZATION_GET_ERROR(13, "failed to query authorization"),
     E_AUTHORIZATION_UPDATE_ERROR(14,"failed to update authorization"),
+    E_ACTIVATION_DELETE_ERROR(15, "failed to delete activation code"),
 
     E_ACTIVATION_NOT_EXIST(20, "activation not exist"),
     E_ACTIVATION_PRODUCT_MISMATCH(21, "activation product mismatch"),

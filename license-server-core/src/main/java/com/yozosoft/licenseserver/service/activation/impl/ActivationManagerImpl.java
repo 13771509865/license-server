@@ -52,6 +52,12 @@ public class ActivationManagerImpl implements ActivationManager {
         return DefaultResult.successResult(cdKeyPOs);
     }
 
+    @Override
+    public IResult<Integer> deleteActivation(Long id) {
+        IResult<Integer> deleteResult = activationService.deleteCdKey(id);
+        return deleteResult;
+    }
+
     private CdKeyQO buildCdKeyQO(ActivationQueryDTO activationQueryDTO){
         CdKeyQO cdKeyQO = new CdKeyQO();
         cdKeyQO.setCdkey(activationQueryDTO.getCdkey());
