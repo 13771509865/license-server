@@ -6,6 +6,9 @@ import com.yozosoft.licenseserver.dto.AuthorizationDTO;
 import com.yozosoft.licenseserver.dto.AuthorizationQueryDTO;
 import com.yozosoft.licenseserver.model.dto.AuthorizationInfoDTO;
 import com.yozosoft.licenseserver.model.dto.PageDTO;
+import com.yozosoft.licenseserver.model.po.ClientInfoPO;
+
+import java.util.List;
 
 public interface AuthorizationManager {
 
@@ -16,4 +19,6 @@ public interface AuthorizationManager {
     IResult<Integer> updateAuthorization(AuthorizationDTO authorizationDTO);
 
     IResult<Integer> checkUpdateParam(AuthorizationDTO authorizationDTO);
+
+    IResult<List<ClientInfoPO>> selectEquipmentDetail(Long cdkeyId);
 }

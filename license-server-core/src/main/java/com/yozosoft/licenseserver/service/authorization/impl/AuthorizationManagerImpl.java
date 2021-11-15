@@ -14,18 +14,21 @@ import com.yozosoft.licenseserver.model.dto.PageDTO;
 import com.yozosoft.licenseserver.model.po.ActivationNumPO;
 import com.yozosoft.licenseserver.model.po.AuthorizationPO;
 import com.yozosoft.licenseserver.model.po.CdKeyPO;
+import com.yozosoft.licenseserver.model.po.ClientInfoPO;
 import com.yozosoft.licenseserver.model.qo.AuthorizationInfoQO;
+import com.yozosoft.licenseserver.model.qo.ClientInfoQO;
 import com.yozosoft.licenseserver.service.activation.ActivationService;
 import com.yozosoft.licenseserver.service.authorization.AuthorizationManager;
 import com.yozosoft.licenseserver.service.authorization.AuthorizationService;
+import com.yozosoft.licenseserver.service.register.ClientRegisterService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shardingsphere.core.strategy.keygen.SnowflakeShardingKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -36,6 +39,9 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
 
     @Autowired
     ActivationService activationService;
+
+    @Autowired
+    ClientRegisterService clientRegisterService;
 
     @Autowired
     SnowflakeShardingKeyGenerator snowflakeShardingKeyGenerator;
@@ -104,6 +110,14 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
             return new DefaultResult<>(EnumResultCode.E_INVALID_PARAM.getValue(), "purchase quantity is error");
         }
         return DefaultResult.successResult();
+    }
+
+    @Override
+    public IResult<List<ClientInfoPO>> selectEquipmentDetail(Long cdkeyId) {
+        ClientInfoQO clientInfoQO = new ClientInfoQO();
+        clientInfoQO.setCdkeyId(cdkeyId);
+        IResult<List<ClientInfoPO>> getResult = clientRegisterService.selectClientInfoByQuery(clientInfoQO);
+        return getResult;
     }
 
     private Boolean checkPermitNum(Long cdKeyId, Integer permitNum) {

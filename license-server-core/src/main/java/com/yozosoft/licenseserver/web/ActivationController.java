@@ -44,8 +44,8 @@ public class ActivationController {
         return ResponseEntity.ok(getResult.getData());
     }
 
-    @DeleteMapping("/activation/{id}")
-    public ResponseEntity deleteActivation(@PathVariable("id") Long id){
+    @DeleteMapping("/activation")
+    public ResponseEntity deleteActivation(@RequestParam Long id){
         IResult<Integer> deleteResult = activationManager.deleteActivation(id);
         if(!deleteResult.isSuccess()){
             throw new LicenseException(EnumResultCode.E_ACTIVATION_DELETE_ERROR);
