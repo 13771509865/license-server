@@ -80,7 +80,7 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public IResult<Integer> updateAuthorization(AuthorizationDTO authorizationDTO) {
+    public IResult<Integer> updateAuthorization(AuthorizationDTO authorizationDTO, CdKeyPO oldCdKeyPO) {
         AuthorizationPO authorizationPO = buildAuthorizationPO(authorizationDTO);
         IResult<Integer> updateResult = authorizationService.updateAuthorization(authorizationPO);
         if (updateResult.isSuccess()) {
@@ -90,7 +90,11 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
                 ActivationNumPO activationNumPO = buildActivationNumPO(authorizationDTO, false);
                 IResult<Integer> numResult = activationService.updateActivationNum(activationNumPO);
                 if (numResult.isSuccess()) {
-                    return DefaultResult.successResult();
+                    Integer increase = authorizationDTO.getPermitNum() - oldCdKeyPO.getPermitNum();
+                    IResult<Integer> increaseResult = activationService.increaseActivationNumByOLock(authorizationDTO.getCdkeyId(), increase, activationNumPO.getUpdateTime());
+                    if(increaseResult.isSuccess()){
+                        return DefaultResult.successResult();
+                    }
                 }
             }
         }
@@ -100,16 +104,16 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
     }
 
     @Override
-    public IResult<Integer> checkUpdateParam(AuthorizationDTO authorizationDTO) {
+    public IResult<CdKeyPO> checkUpdateParam(AuthorizationDTO authorizationDTO) {
         Long id = authorizationDTO.getId();
         if (id == null || id <= 0) {
             return new DefaultResult<>(EnumResultCode.E_INVALID_PARAM.getValue(), "id is null");
         }
-        Boolean checkResult = checkPermitNum(authorizationDTO.getCdkeyId(), authorizationDTO.getPermitNum());
-        if (!checkResult) {
+        CdKeyPO cdKeyPO = checkPermitNum(authorizationDTO.getCdkeyId(), authorizationDTO.getPermitNum());
+        if (cdKeyPO == null) {
             return new DefaultResult<>(EnumResultCode.E_INVALID_PARAM.getValue(), "purchase quantity is error");
         }
-        return DefaultResult.successResult();
+        return DefaultResult.successResult(cdKeyPO);
     }
 
     @Override
@@ -120,16 +124,16 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
         return getResult;
     }
 
-    private Boolean checkPermitNum(Long cdKeyId, Integer permitNum) {
+    private CdKeyPO checkPermitNum(Long cdKeyId, Integer permitNum) {
         IResult<CdKeyPO> getResult = activationService.selectCdKeyById(cdKeyId);
         if (getResult.isSuccess()) {
             CdKeyPO cdKeyPO = getResult.getData();
             Integer oldPermitNum = cdKeyPO.getPermitNum();
             if (permitNum >= oldPermitNum) {
-                return true;
+                return cdKeyPO;
             }
         }
-        return false;
+        return null;
     }
 
     private AuthorizationInfoQO buildAuthorizationInfoQO(AuthorizationQueryDTO authorizationQueryDTO) {

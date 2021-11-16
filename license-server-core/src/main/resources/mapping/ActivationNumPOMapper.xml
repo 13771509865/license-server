@@ -88,12 +88,19 @@
   </update>
   <update id="reduceNum" parameterType="java.lang.Long">
     update activation_num
-    set surplus = surplus - 1
+    set surplus = surplus - 1,
+        update_time = now()
     where cdkey_id = #{cdkeyId,jdbcType=BIGINT} and surplus &gt;= 1 and surplus &lt;= permit_num
   </update>
   <update id="increaseNum" parameterType="java.lang.Long">
     update activation_num
-    set surplus = surplus + 1
+    set surplus = surplus + 1,
+        update_time = now()
     where cdkey_id = #{cdkeyId,jdbcType=BIGINT} and surplus &lt;= permit_num
+  </update>
+  <update id="increaseActivationNumByOLock">
+    update activation_num
+    set surplus = surplus + #{increase}
+    where cdkey_id = #{cdkeyId} and update_time = #{updateTime}
   </update>
 </mapper>

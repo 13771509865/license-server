@@ -11,6 +11,7 @@ import com.yozosoft.licenseserver.service.activation.ActivationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -79,6 +80,12 @@ public class ActivationServiceImpl implements ActivationService {
     @Override
     public IResult<Integer> increaseActivationNum(Long cdkId) {
         int i = activationNumPOMapper.increaseNum(cdkId);
+        return i > 0 ? DefaultResult.successResult() : DefaultResult.failResult();
+    }
+
+    @Override
+    public IResult<Integer> increaseActivationNumByOLock(Long cdkId, Integer increase, Date updateTime) {
+        int i = activationNumPOMapper.increaseActivationNumByOLock(cdkId, increase, updateTime);
         return i > 0 ? DefaultResult.successResult() : DefaultResult.failResult();
     }
 }

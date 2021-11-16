@@ -8,6 +8,7 @@ import com.yozosoft.licenseserver.dto.AuthorizationQueryDTO;
 import com.yozosoft.licenseserver.exception.LicenseException;
 import com.yozosoft.licenseserver.model.dto.AuthorizationInfoDTO;
 import com.yozosoft.licenseserver.model.dto.PageDTO;
+import com.yozosoft.licenseserver.model.po.CdKeyPO;
 import com.yozosoft.licenseserver.model.po.ClientInfoPO;
 import com.yozosoft.licenseserver.service.authorization.AuthorizationManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +47,11 @@ public class AuthorizationController {
 
     @PutMapping("/authorization")
     public ResponseEntity updateAuthorization(@RequestBody @Valid AuthorizationDTO authorizationDTO) {
-        IResult<Integer> checkResult = authorizationManager.checkUpdateParam(authorizationDTO);
+        IResult<CdKeyPO> checkResult = authorizationManager.checkUpdateParam(authorizationDTO);
         if (!checkResult.isSuccess()) {
             throw new LicenseException(checkResult.getCode(), checkResult.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        IResult<Integer> updateResult = authorizationManager.updateAuthorization(authorizationDTO);
+        IResult<Integer> updateResult = authorizationManager.updateAuthorization(authorizationDTO, checkResult.getData());
         if (!updateResult.isSuccess()) {
             throw new LicenseException(updateResult.getCode(), updateResult.getMessage());
         }

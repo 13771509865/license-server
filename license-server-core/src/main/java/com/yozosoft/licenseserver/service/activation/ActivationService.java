@@ -5,6 +5,7 @@ import com.yozosoft.licenseserver.model.po.ActivationNumPO;
 import com.yozosoft.licenseserver.model.po.CdKeyPO;
 import com.yozosoft.licenseserver.model.qo.CdKeyQO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,4 +34,6 @@ public interface ActivationService {
     IResult<Integer> reduceActivationNum(Long cdkId);
 
     IResult<Integer> increaseActivationNum(Long cdkId);
+
+    IResult<Integer> increaseActivationNumByOLock(Long cdkId, Integer increase, Date updateTime);
 }
