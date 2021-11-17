@@ -6,6 +6,7 @@ import com.yozosoft.licenseserver.common.util.DefaultResult;
 import com.yozosoft.licenseserver.common.util.IResult;
 import com.yozosoft.licenseserver.constant.EnumActivationStatus;
 import com.yozosoft.licenseserver.constant.EnumResultCode;
+import com.yozosoft.licenseserver.dao.ActivationNumPOMapper;
 import com.yozosoft.licenseserver.dto.AuthorizationDTO;
 import com.yozosoft.licenseserver.dto.AuthorizationQueryDTO;
 import com.yozosoft.licenseserver.exception.LicenseException;
@@ -45,6 +46,9 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
 
     @Autowired
     SnowflakeShardingKeyGenerator snowflakeShardingKeyGenerator;
+
+    @Autowired
+    ActivationNumPOMapper activationNumPOMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)

@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 10/11/2021 16:20:18
+ Date: 17/11/2021 14:02:24
 */
 
 SET NAMES utf8mb4;
@@ -23,8 +23,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `activation_exception_record`;
 CREATE TABLE `activation_exception_record`  (
   `id` bigint(20) NOT NULL,
-  `create_time` datetime(0) NOT NULL,
-  `update_time` datetime(0) NOT NULL,
+  `create_time` datetime(3) NOT NULL,
+  `update_time` datetime(3) NOT NULL,
   `cdkey_id` bigint(20) NOT NULL,
   `cdkey` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `ip` tinyint(3) UNSIGNED NULL DEFAULT NULL,
@@ -42,8 +42,8 @@ CREATE TABLE `activation_exception_record`  (
 DROP TABLE IF EXISTS `activation_num`;
 CREATE TABLE `activation_num`  (
   `cdkey_id` bigint(20) NOT NULL,
-  `create_time` datetime(0) NOT NULL,
-  `update_time` datetime(0) NOT NULL,
+  `create_time` datetime(3) NOT NULL,
+  `update_time` datetime(3) NOT NULL,
   `status` tinyint(3) UNSIGNED NULL DEFAULT NULL,
   `permit_num` int(11) NOT NULL,
   `surplus` int(11) NOT NULL,
@@ -56,12 +56,12 @@ CREATE TABLE `activation_num`  (
 DROP TABLE IF EXISTS `authorization`;
 CREATE TABLE `authorization`  (
   `id` bigint(20) NOT NULL,
-  `create_time` datetime(0) NOT NULL,
-  `update_time` datetime(0) NOT NULL,
+  `create_time` datetime(3) NOT NULL,
+  `update_time` datetime(3) NOT NULL,
   `status` tinyint(3) UNSIGNED NULL DEFAULT NULL,
   `customer_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `customer_region` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `customer_date` datetime(0) NOT NULL,
+  `customer_date` datetime(3) NOT NULL,
   `customer_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `saler_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `saler_mail` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -78,11 +78,11 @@ CREATE TABLE `authorization`  (
 DROP TABLE IF EXISTS `cdkey`;
 CREATE TABLE `cdkey`  (
   `id` bigint(20) NOT NULL,
-  `create_time` datetime(0) NOT NULL,
-  `update_time` datetime(0) NOT NULL,
+  `create_time` datetime(3) NOT NULL,
+  `update_time` datetime(3) NOT NULL,
   `status` tinyint(3) UNSIGNED NULL DEFAULT NULL,
   `cdkey` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `cdk_create_time` datetime(0) NULL DEFAULT NULL,
+  `cdk_create_time` datetime(3) NULL DEFAULT NULL,
   `machine` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `producer` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `product` tinyint(3) UNSIGNED NULL DEFAULT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE `cdkey`  (
   `mode` tinyint(3) UNSIGNED NOT NULL,
   `expire_num` int(11) NULL DEFAULT NULL,
   `expire_unit` tinyint(3) UNSIGNED NULL DEFAULT NULL,
-  `expire_date` datetime(0) NULL DEFAULT NULL,
+  `expire_date` datetime(3) NULL DEFAULT NULL,
   `permit_num` int(11) NOT NULL,
   `heart_rate_num` int(11) NOT NULL,
   `heart_rate_unit` tinyint(3) UNSIGNED NOT NULL,
@@ -107,15 +107,15 @@ CREATE TABLE `cdkey`  (
 DROP TABLE IF EXISTS `client_info`;
 CREATE TABLE `client_info`  (
   `id` bigint(20) NOT NULL,
-  `create_time` datetime(0) NOT NULL,
-  `update_time` datetime(0) NOT NULL,
+  `create_time` datetime(3) NOT NULL,
+  `update_time` datetime(3) NOT NULL,
   `status` tinyint(4) NULL DEFAULT NULL,
   `cdkey_id` bigint(20) NOT NULL,
   `cpu_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `bios_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `mac` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `ip` tinyint(3) UNSIGNED NULL DEFAULT NULL,
-  `expire_date` datetime(0) NOT NULL,
+  `expire_date` datetime(3) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `index_cdk_bios_cpu`(`bios_id`, `cpu_id`, `cdkey_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
