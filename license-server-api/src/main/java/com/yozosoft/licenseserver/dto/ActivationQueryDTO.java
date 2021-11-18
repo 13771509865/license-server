@@ -1,6 +1,7 @@
 package com.yozosoft.licenseserver.dto;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -17,7 +18,9 @@ public class ActivationQueryDTO {
 
     private String cdkey;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date cdkCreateTimeStart;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date cdkCreateTimeEnd;
 }

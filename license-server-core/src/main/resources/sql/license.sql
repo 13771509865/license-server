@@ -109,7 +109,7 @@ CREATE TABLE `client_info`  (
   `id` bigint(20) NOT NULL,
   `create_time` datetime(3) NOT NULL,
   `update_time` datetime(3) NOT NULL,
-  `status` tinyint(4) NULL DEFAULT NULL,
+  `status` tinyint(3) NULL DEFAULT NULL,
   `cdkey_id` bigint(20) NOT NULL,
   `cpu_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `bios_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
