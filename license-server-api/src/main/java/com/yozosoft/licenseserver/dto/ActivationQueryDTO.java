@@ -18,6 +18,8 @@ public class ActivationQueryDTO {
 
     private String cdkey;
 
+    private Byte status;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date cdkCreateTimeStart;
 

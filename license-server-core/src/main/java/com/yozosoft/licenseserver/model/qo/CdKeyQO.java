@@ -17,6 +17,8 @@ public class CdKeyQO {
 
     private String cdkey;
 
+    private Byte status;
+
     private Date cdkCreateTimeStart;
 
     private Date cdkCreateTimeEnd;

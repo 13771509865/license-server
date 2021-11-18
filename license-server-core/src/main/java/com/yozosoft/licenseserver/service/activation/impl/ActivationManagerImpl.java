@@ -66,6 +66,7 @@ public class ActivationManagerImpl implements ActivationManager {
         cdKeyQO.setCdkType(activationQueryDTO.getCdkType());
         cdKeyQO.setCdkCreateTimeStart(activationQueryDTO.getCdkCreateTimeStart());
         cdKeyQO.setCdkCreateTimeEnd(activationQueryDTO.getCdkCreateTimeEnd());
+        cdKeyQO.setStatus(activationQueryDTO.getStatus());
         return cdKeyQO;
     }
 

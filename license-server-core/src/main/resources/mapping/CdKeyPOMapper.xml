@@ -51,6 +51,9 @@
       <if test="cdkCreateTimeEnd != null">
         <![CDATA[AND cdk_create_time <= #{cdkCreateTimeEnd}]]>
       </if>
+      <if test="status !=null">
+        AND status = #{status}
+      </if>
     </where>
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
