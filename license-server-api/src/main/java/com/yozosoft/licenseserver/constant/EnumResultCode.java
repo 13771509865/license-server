@@ -33,6 +33,7 @@ public enum EnumResultCode {
     E_REPEAT_ACTIVATION_ERROR(23, "repeat activation failed"),
     E_PERMIT_NUM_LACK(24, "activation permit num lack"),
     E_ACTIVATION_ERROR(25, "activation failed"),
+    E_ACTIVATION_EXPIRED(26, "activation has expired"),
 
     E_ACTIVATION_CONFIRM_ERROR(30, "activation confirm failed"),
 

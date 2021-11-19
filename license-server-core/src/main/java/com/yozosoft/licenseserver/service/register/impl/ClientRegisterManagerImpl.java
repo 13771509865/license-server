@@ -179,10 +179,13 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
         if (cdKeyPO.getStatus() < 2) {
             throw new LicenseException(EnumResultCode.E_ACTIVATION_STATUS_ILLEGAL);
         }
-        if(cdKeyPO.getStatus().equals(EnumActivationStatus.E_NOT_ACTIVE.getValue())){
+        if (cdKeyPO.getExpireDate() != null && DateUtils.truncatedCompareTo(cdKeyPO.getExpireDate(), new Date(), Calendar.MILLISECOND) <= 0) {
+            throw new LicenseException(EnumResultCode.E_ACTIVATION_EXPIRED);
+        }
+        if (cdKeyPO.getStatus().equals(EnumActivationStatus.E_NOT_ACTIVE.getValue())) {
             cdKeyPO.setStatus(EnumActivationStatus.E_ACTIVE.getValue());
             IResult<Integer> updateResult = activationService.updateCdKey(cdKeyPO);
-            if(!updateResult.isSuccess()){
+            if (!updateResult.isSuccess()) {
                 log.error("激活时更新cdkey status状态失败");
                 throw new LicenseException(EnumResultCode.E_ACTIVATION_ERROR);
             }
@@ -201,14 +204,14 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
             //查询到已激活过
             ClientInfoPO clientInfoPO = clientInfoPOs.get(0);
             if (DateUtils.truncatedCompareTo(clientInfoPO.getExpireDate(), new Date(), Calendar.MILLISECOND) > 0) {
-                if(clientInfoPO.getStatus().equals((byte) 1) ){
+                if (clientInfoPO.getStatus().equals((byte) 1)) {
                     clientInfoPO.setStatus(EnumActivationStatus.E_REACTIVE.getValue());
                     IResult<Integer> updateResult = clientRegisterService.updateClientInfo(clientInfoPO);
                     if (!updateResult.isSuccess()) {
                         log.error("重装激活时,更新clientInfo表status状态失败");
                     }
                     return buildClientRegisterResultDTO(clientInfoPO, cdKeyPO);
-                }else if(clientInfoPO.getStatus().equals(EnumActivationStatus.E_REACTIVE.getValue())){
+                } else if (clientInfoPO.getStatus().equals(EnumActivationStatus.E_REACTIVE.getValue())) {
                     return buildClientRegisterResultDTO(clientInfoPO, cdKeyPO);
                 }
             }
