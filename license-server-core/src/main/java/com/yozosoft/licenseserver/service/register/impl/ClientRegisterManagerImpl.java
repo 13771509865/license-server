@@ -134,7 +134,7 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
         clientInfoPO.setCdkeyId(cdkId);
         clientInfoPO.setBiosId(clientRegisterDTO.getBiosId());
         clientInfoPO.setCpuId(clientRegisterDTO.getCpuId());
-        clientInfoPO.setMac(clientInfoPO.getMac());
+        clientInfoPO.setMac(clientRegisterDTO.getMac());
         //TODO ip转换还没做
 //        clientInfoPO.setIp(clientInfoPO.getIp());
         clientInfoPO.setExpireDate(expireDate);
@@ -179,6 +179,14 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
         if (cdKeyPO.getStatus() < 2) {
             throw new LicenseException(EnumResultCode.E_ACTIVATION_STATUS_ILLEGAL);
         }
+        if(cdKeyPO.getStatus().equals(EnumActivationStatus.E_NOT_ACTIVE.getValue())){
+            cdKeyPO.setStatus(EnumActivationStatus.E_ACTIVE.getValue());
+            IResult<Integer> updateResult = activationService.updateCdKey(cdKeyPO);
+            if(!updateResult.isSuccess()){
+                log.error("激活时更新cdkey status状态失败");
+                throw new LicenseException(EnumResultCode.E_ACTIVATION_ERROR);
+            }
+        }
         return cdKeyPO;
     }
 
@@ -192,7 +200,7 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
         if (getResult.isSuccess() && clientInfoPOs != null && clientInfoPOs.size() == 1) {
             //查询到已激活过
             ClientInfoPO clientInfoPO = clientInfoPOs.get(0);
-            if (cdKeyPO.getStatus().equals(EnumActivationStatus.E_ACTIVE.getValue()) && DateUtils.truncatedCompareTo(clientInfoPO.getExpireDate(), new Date(), Calendar.MILLISECOND) > 0) {
+            if (DateUtils.truncatedCompareTo(clientInfoPO.getExpireDate(), new Date(), Calendar.MILLISECOND) > 0) {
                 if(clientInfoPO.getStatus().equals((byte) 1) ){
                     clientInfoPO.setStatus(EnumActivationStatus.E_REACTIVE.getValue());
                     IResult<Integer> updateResult = clientRegisterService.updateClientInfo(clientInfoPO);

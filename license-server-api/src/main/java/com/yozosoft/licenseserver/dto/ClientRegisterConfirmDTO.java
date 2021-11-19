@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class ClientRegisterConfirmDTO {
 
-    @NotBlank(message = "activationId is blank")
+    @NotNull(message = "activationId is null")
     private Long activationId;
 
     @NotNull(message = "activation result is null")

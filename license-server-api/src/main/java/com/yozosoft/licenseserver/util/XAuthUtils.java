@@ -11,7 +11,7 @@ import java.util.Date;
 public class XAuthUtils {
 
     public static String buildYozoAuth(Date date, String secret, String contentMd5){
-        String str = secret + contentMd5 + date.getTime();
+        String str = secret + contentMd5 + date.toString();
         String sha1 = DigestUtils.sha1Hex(str);
         return sha1;
     }
