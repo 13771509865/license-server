@@ -16,6 +16,7 @@ import com.yozosoft.licenseserver.service.activation.ActivationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shardingsphere.core.strategy.keygen.SnowflakeShardingKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -38,7 +39,11 @@ public class ActivationManagerImpl implements ActivationManager {
             if(insertResult.isSuccess()){
                 return insertResult;
             }
-        }catch (Exception e){
+        } catch (DuplicateKeyException de){
+            de.printStackTrace();
+            log.error("激活码重复",de);
+            return new DefaultResult<>(EnumResultCode.E_ACTIVATION_REPEAT_ERROR);
+        } catch (Exception e){
             e.printStackTrace();
             log.error("录入激活码插入数据库失败", e);
         }
