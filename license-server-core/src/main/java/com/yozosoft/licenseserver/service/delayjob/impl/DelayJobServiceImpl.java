@@ -11,6 +11,7 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -24,6 +25,11 @@ public class DelayJobServiceImpl implements DelayJobService {
 
     @Autowired
     ClientRegisterManager clientRegisterManager;
+
+    @PostConstruct
+    public void initHandler(){
+        handlerRegisterDelayJob();
+    }
 
     @Override
     public void sendRegisterDelayJob(Long activationId) {
