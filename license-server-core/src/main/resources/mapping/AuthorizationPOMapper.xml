@@ -216,5 +216,6 @@
     left join cdkey on cdkey.id = authorization.cdkey_id
     left join activation_num on activation_num.cdkey_id = authorization.cdkey_id
     <include refid="search_condition"/>
+    order by authorization.create_time desc
   </select>
 </mapper>
