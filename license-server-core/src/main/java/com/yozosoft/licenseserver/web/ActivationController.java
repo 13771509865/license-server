@@ -36,7 +36,7 @@ public class ActivationController {
     }
 
     @GetMapping("/activation")
-    public ResponseEntity getActivation(@Valid PageDTO pageDTO, ActivationQueryDTO activationQueryDTO){
+    public ResponseEntity getActivation(PageDTO pageDTO, ActivationQueryDTO activationQueryDTO){
         IResult<PageInfo<CdKeyPO>> getResult = activationManager.getActivationsByQuery(pageDTO, activationQueryDTO);
         if(!getResult.isSuccess()){
             throw new LicenseException(EnumResultCode.E_ACTIVATION_GET_ERROR);
