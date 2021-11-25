@@ -37,7 +37,7 @@ public class AuthorizationController {
     }
 
     @GetMapping("/authorization")
-    public ResponseEntity getAuthorization(@Valid PageDTO pageDTO, AuthorizationQueryDTO authorizationQueryDTO) {
+    public ResponseEntity getAuthorization(PageDTO pageDTO, AuthorizationQueryDTO authorizationQueryDTO) {
         IResult<PageInfo<AuthorizationInfoDTO>> getResult = authorizationManager.getAuthorizationInfoByQuery(pageDTO, authorizationQueryDTO);
         if (!getResult.isSuccess()) {
             throw new LicenseException(EnumResultCode.E_AUTHORIZATION_GET_ERROR);
@@ -59,8 +59,8 @@ public class AuthorizationController {
     }
 
     @GetMapping("/equipment")
-    public ResponseEntity getEquipmentDetail(@RequestParam Long cdkeyId) {
-        IResult<List<ClientInfoPO>> getResult = authorizationManager.selectEquipmentDetail(cdkeyId);
+    public ResponseEntity getEquipmentDetail(@RequestParam Long cdkeyId, PageDTO pageDTO) {
+        IResult<PageInfo<ClientInfoPO>> getResult = authorizationManager.selectEquipmentDetail(cdkeyId, pageDTO);
         if (!getResult.isSuccess()) {
             throw new LicenseException(EnumResultCode.E_CLIENT_INFO_GET_ERROR);
         }

@@ -121,11 +121,11 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
     }
 
     @Override
-    public IResult<List<ClientInfoPO>> selectEquipmentDetail(Long cdkeyId) {
+    public IResult<PageInfo<ClientInfoPO>> selectEquipmentDetail(Long cdkeyId, PageDTO pageDTO) {
         ClientInfoQO clientInfoQO = new ClientInfoQO();
         clientInfoQO.setCdkeyId(cdkeyId);
-        IResult<List<ClientInfoPO>> getResult = clientRegisterService.selectClientInfoByQuery(clientInfoQO);
-        return getResult;
+        PageInfo<ClientInfoPO> clientInfos = PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize()).doSelectPageInfo(() -> clientRegisterService.selectClientInfoByQuery(clientInfoQO));
+        return DefaultResult.successResult(clientInfos);
     }
 
     private CdKeyPO checkPermitNum(Long cdKeyId, Integer permitNum) {

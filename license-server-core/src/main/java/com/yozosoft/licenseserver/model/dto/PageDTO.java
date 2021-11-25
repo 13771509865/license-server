@@ -1,6 +1,7 @@
 package com.yozosoft.licenseserver.model.dto;
 
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Min;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.Min;
  * @author zhouf
  */
 @Data
+@Validated
 public class PageDTO {
 
     @Min(value = 1L, message = "pageNum illegal")
