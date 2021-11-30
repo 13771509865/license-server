@@ -23,13 +23,16 @@ import com.yozosoft.licenseserver.service.authorization.AuthorizationManager;
 import com.yozosoft.licenseserver.service.authorization.AuthorizationService;
 import com.yozosoft.licenseserver.service.register.ClientRegisterService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.shardingsphere.core.strategy.keygen.SnowflakeShardingKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -124,8 +127,19 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
     public IResult<PageInfo<ClientInfoPO>> selectEquipmentDetail(Long cdkeyId, PageDTO pageDTO) {
         ClientInfoQO clientInfoQO = new ClientInfoQO();
         clientInfoQO.setCdkeyId(cdkeyId);
-        PageInfo<ClientInfoPO> clientInfos = PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize()).doSelectPageInfo(() -> clientRegisterService.selectClientInfoByQuery(clientInfoQO));
+        PageInfo<ClientInfoPO> clientInfos = PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize()).doSelectPageInfo(() -> handleExpiredStatus(clientRegisterService.selectClientInfoByQuery(clientInfoQO)));
         return DefaultResult.successResult(clientInfos);
+    }
+
+    private List<ClientInfoPO> handleExpiredStatus(IResult<List<ClientInfoPO>> clientInfos){
+        Date nowDate = new Date();
+        List<ClientInfoPO> clientInfoPOS = clientInfos.getData().stream().map(clientInfoPO -> {
+            if (DateUtils.truncatedCompareTo(clientInfoPO.getExpireDate(), nowDate, Calendar.MILLISECOND) <= 0) {
+                clientInfoPO.setStatus(EnumActivationStatus.E_EXPIRED.getValue());
+            }
+            return clientInfoPO;
+        }).collect(Collectors.toList());
+        return clientInfoPOS;
     }
 
     private CdKeyPO checkPermitNum(Long cdKeyId, Integer permitNum) {

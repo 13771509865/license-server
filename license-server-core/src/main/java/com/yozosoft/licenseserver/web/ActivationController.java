@@ -17,6 +17,7 @@ import javax.validation.Valid;
 
 /**
  * 激活码管理
+ *
  * @author zhouf
  */
 @RestController
@@ -27,27 +28,27 @@ public class ActivationController {
     ActivationManager activationManager;
 
     @PostMapping("/activation")
-    public ResponseEntity addActivation(@RequestBody @Valid ActivationDTO activationDTO){
+    public ResponseEntity addActivation(@RequestBody @Valid ActivationDTO activationDTO) {
         IResult<Integer> addResult = activationManager.addActivation(activationDTO);
-        if(!addResult.isSuccess()){
+        if (!addResult.isSuccess()) {
             throw new LicenseException(addResult.getCode(), addResult.getMessage());
         }
         return ResponseEntity.ok(EnumResultCode.E_SUCCESS.getInfo());
     }
 
     @GetMapping("/activation")
-    public ResponseEntity getActivation(PageDTO pageDTO, ActivationQueryDTO activationQueryDTO){
+    public ResponseEntity getActivation(PageDTO pageDTO, ActivationQueryDTO activationQueryDTO) {
         IResult<PageInfo<CdKeyPO>> getResult = activationManager.getActivationsByQuery(pageDTO, activationQueryDTO);
-        if(!getResult.isSuccess()){
+        if (!getResult.isSuccess()) {
             throw new LicenseException(EnumResultCode.E_ACTIVATION_GET_ERROR);
         }
         return ResponseEntity.ok(getResult.getData());
     }
 
     @DeleteMapping("/activation")
-    public ResponseEntity deleteActivation(@RequestParam Long id){
+    public ResponseEntity deleteActivation(@RequestParam Long id) {
         IResult<Integer> deleteResult = activationManager.deleteActivation(id);
-        if(!deleteResult.isSuccess()){
+        if (!deleteResult.isSuccess()) {
             throw new LicenseException(EnumResultCode.E_ACTIVATION_DELETE_ERROR);
         }
         return ResponseEntity.ok(EnumResultCode.E_SUCCESS.getInfo());
