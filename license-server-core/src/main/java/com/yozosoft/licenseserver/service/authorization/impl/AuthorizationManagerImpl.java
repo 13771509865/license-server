@@ -9,6 +9,7 @@ import com.yozosoft.licenseserver.constant.EnumResultCode;
 import com.yozosoft.licenseserver.dao.ActivationNumPOMapper;
 import com.yozosoft.licenseserver.dto.AuthorizationDTO;
 import com.yozosoft.licenseserver.dto.AuthorizationQueryDTO;
+import com.yozosoft.licenseserver.dto.EquipmentQueryDTO;
 import com.yozosoft.licenseserver.exception.LicenseException;
 import com.yozosoft.licenseserver.model.dto.AuthorizationInfoDTO;
 import com.yozosoft.licenseserver.model.dto.PageDTO;
@@ -124,9 +125,13 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
     }
 
     @Override
-    public IResult<PageInfo<ClientInfoPO>> selectEquipmentDetail(Long cdkeyId, PageDTO pageDTO) {
+    public IResult<PageInfo<ClientInfoPO>> selectEquipmentDetail(EquipmentQueryDTO equipmentQueryDTO, PageDTO pageDTO) {
         ClientInfoQO clientInfoQO = new ClientInfoQO();
-        clientInfoQO.setCdkeyId(cdkeyId);
+        clientInfoQO.setCdkeyId(equipmentQueryDTO.getCdkeyId());
+        clientInfoQO.setCpuId(equipmentQueryDTO.getCpuId());
+        clientInfoQO.setBiosId(equipmentQueryDTO.getBiosId());
+        clientInfoQO.setMac(equipmentQueryDTO.getMac());
+        clientInfoQO.setIp(equipmentQueryDTO.getIp());
         PageInfo<ClientInfoPO> clientInfos = PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize()).doSelectPageInfo(() -> handleExpiredStatus(clientRegisterService.selectClientInfoByQuery(clientInfoQO)));
         return DefaultResult.successResult(clientInfos);
     }

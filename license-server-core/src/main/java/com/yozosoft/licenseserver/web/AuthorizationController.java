@@ -5,6 +5,7 @@ import com.yozosoft.licenseserver.common.util.IResult;
 import com.yozosoft.licenseserver.constant.EnumResultCode;
 import com.yozosoft.licenseserver.dto.AuthorizationDTO;
 import com.yozosoft.licenseserver.dto.AuthorizationQueryDTO;
+import com.yozosoft.licenseserver.dto.EquipmentQueryDTO;
 import com.yozosoft.licenseserver.exception.LicenseException;
 import com.yozosoft.licenseserver.model.dto.AuthorizationInfoDTO;
 import com.yozosoft.licenseserver.model.dto.PageDTO;
@@ -59,8 +60,8 @@ public class AuthorizationController {
     }
 
     @GetMapping("/equipment")
-    public ResponseEntity getEquipmentDetail(@RequestParam Long cdkeyId, PageDTO pageDTO) {
-        IResult<PageInfo<ClientInfoPO>> getResult = authorizationManager.selectEquipmentDetail(cdkeyId, pageDTO);
+    public ResponseEntity getEquipmentDetail(@Valid EquipmentQueryDTO equipmentQueryDTO, PageDTO pageDTO) {
+        IResult<PageInfo<ClientInfoPO>> getResult = authorizationManager.selectEquipmentDetail(equipmentQueryDTO, pageDTO);
         if (!getResult.isSuccess()) {
             throw new LicenseException(EnumResultCode.E_CLIENT_INFO_GET_ERROR);
         }
