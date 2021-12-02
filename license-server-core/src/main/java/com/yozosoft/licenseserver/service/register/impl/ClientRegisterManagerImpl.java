@@ -144,6 +144,7 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
 
     private void handlerRepeatRegister(ClientInfoPO clientInfoPO) {
         clientInfoPO.setStatus(EnumActivationStatus.E_REACTIVE.getValue());
+        clientInfoPO.setUpdateTime(new Date());
         IResult<Integer> updateResult = clientRegisterService.updateClientInfo(clientInfoPO);
         if (!updateResult.isSuccess()) {
             log.error("confirm确认时,更新clientInfo 重装激活状态失败");
