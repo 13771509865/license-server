@@ -60,7 +60,7 @@ public class DelayJobServiceImpl implements DelayJobService {
                 try{
                     activationId = blockingQueue.take();
                     log.info("超时激活,activationId为:"+activationId);
-                    clientRegisterManager.cancelRegister(activationId);
+                    clientRegisterManager.cancelRegister(activationId, null);
                 }catch (Exception e){
                     log.error("延迟队列消费失败,activationId为:"+activationId,e);
                 }

@@ -28,15 +28,15 @@ public class ShardingJdbcConfig {
     @Qualifier("masterDataSource")
     DataSource masterDataSource;
 
-//    @Primary
-//    @Bean
-//    public DataSource initShardingJdbcDataSource() throws SQLException {
-//        Map<String, DataSource> dataSourceMap = createDataSourceMap();
-//        ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
-//        Properties props = new Properties();
-//        DataSource dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig, props);
-//        return dataSource;
-//    }
+    @Primary
+    @Bean
+    public DataSource initShardingJdbcDataSource() throws SQLException {
+        Map<String, DataSource> dataSourceMap = createDataSourceMap();
+        ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
+        Properties props = new Properties();
+        DataSource dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig, props);
+        return dataSource;
+    }
 
     @Bean
     public SnowflakeShardingKeyGenerator keyGenerator() {

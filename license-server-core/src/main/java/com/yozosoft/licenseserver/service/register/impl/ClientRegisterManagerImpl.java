@@ -86,31 +86,38 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
         Long activationId = clientRegisterConfirmDTO.getActivationId();
         Byte activationResult = clientRegisterConfirmDTO.getActivationResult();
         IResult<Integer> removeResult = delayJobService.removeRegisterDelayJob(activationId);
-        if (activationResult.equals((byte) 0)) {
-            //客户端激活失败
-            cancelRegister(activationId);
-        } else {
-            ClientInfoPO clientInfoPO = new ClientInfoPO();
-            clientInfoPO.setId(activationId);
-            clientInfoPO.setStatus((byte) 1);
-            IResult<Integer> updateResult = clientRegisterService.updateClientInfo(clientInfoPO);
-            if (!updateResult.isSuccess()) {
-                log.error("confirm确认成功时,更新clientInfo失败");
-                throw new LicenseException(EnumResultCode.E_ACTIVATION_CONFIRM_ERROR);
-            }
-        }
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void cancelRegister(Long activationId) {
         IResult<ClientInfoPO> getResult = clientRegisterService.selectClientInfoById(activationId);
         if (!getResult.isSuccess()) {
             log.error("confirm确认失败时,查询clientInfo失败");
             throw new LicenseException(EnumResultCode.E_ACTIVATION_CONFIRM_ERROR);
         }
         ClientInfoPO clientInfoPO = getResult.getData();
-        if (!clientInfoPO.getStatus().equals((byte) 1)) {
+        if (clientInfoPO.getStatus().equals((byte) 1)) {
+            //更新重装激活状态
+            handlerRepeatRegister(clientInfoPO);
+        } else {
+            //正常激活确认流程
+            if (activationResult.equals((byte) 0)) {
+                //客户端激活失败
+                cancelRegister(activationId, clientInfoPO);
+            } else {
+                confirmRegister(clientInfoPO);
+            }
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void cancelRegister(Long activationId, ClientInfoPO clientInfoPO) {
+        if (clientInfoPO == null) {
+            IResult<ClientInfoPO> getResult = clientRegisterService.selectClientInfoById(activationId);
+            if (!getResult.isSuccess()) {
+                log.error("confirm确认失败时,查询clientInfo失败");
+                throw new LicenseException(EnumResultCode.E_ACTIVATION_CONFIRM_ERROR);
+            }
+            clientInfoPO = getResult.getData();
+        }
+        if (clientInfoPO.getStatus().equals(EnumActivationStatus.E_ACTIVATING.getValue())) {
             IResult<Integer> increaseResult = activationService.increaseActivationNum(clientInfoPO.getCdkeyId());
             if (!increaseResult.isSuccess()) {
                 log.error("confirm确认失败时,增长激活次数失败");
@@ -121,6 +128,26 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
                 log.error("confirm确认失败时,删除clientInfo失败");
                 throw new LicenseException(EnumResultCode.E_ACTIVATION_CONFIRM_ERROR);
             }
+        }
+    }
+
+    private void confirmRegister(ClientInfoPO clientInfoPO) {
+        if (clientInfoPO.getStatus().equals(EnumActivationStatus.E_ACTIVATING.getValue())) {
+            clientInfoPO.setStatus((byte) 1);
+            IResult<Integer> updateResult = clientRegisterService.updateClientInfo(clientInfoPO);
+            if (!updateResult.isSuccess()) {
+                log.error("confirm确认成功时,更新clientInfo失败");
+                throw new LicenseException(EnumResultCode.E_ACTIVATION_CONFIRM_ERROR);
+            }
+        }
+    }
+
+    private void handlerRepeatRegister(ClientInfoPO clientInfoPO) {
+        clientInfoPO.setStatus(EnumActivationStatus.E_REACTIVE.getValue());
+        IResult<Integer> updateResult = clientRegisterService.updateClientInfo(clientInfoPO);
+        if (!updateResult.isSuccess()) {
+            log.error("confirm确认时,更新clientInfo 重装激活状态失败");
+            throw new LicenseException(EnumResultCode.E_ACTIVATION_CONFIRM_ERROR);
         }
     }
 
@@ -203,17 +230,8 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
         if (getResult.isSuccess() && clientInfoPOs != null && clientInfoPOs.size() == 1) {
             //查询到已激活过
             ClientInfoPO clientInfoPO = clientInfoPOs.get(0);
-            if (DateUtils.truncatedCompareTo(clientInfoPO.getExpireDate(), new Date(), Calendar.MILLISECOND) > 0) {
-                if (clientInfoPO.getStatus().equals((byte) 1)) {
-                    clientInfoPO.setStatus(EnumActivationStatus.E_REACTIVE.getValue());
-                    IResult<Integer> updateResult = clientRegisterService.updateClientInfo(clientInfoPO);
-                    if (!updateResult.isSuccess()) {
-                        log.error("重装激活时,更新clientInfo表status状态失败");
-                    }
-                    return buildClientRegisterResultDTO(clientInfoPO, cdKeyPO);
-                } else if (clientInfoPO.getStatus().equals(EnumActivationStatus.E_REACTIVE.getValue())) {
-                    return buildClientRegisterResultDTO(clientInfoPO, cdKeyPO);
-                }
+            if (DateUtils.truncatedCompareTo(clientInfoPO.getExpireDate(), new Date(), Calendar.MILLISECOND) > 0 && (clientInfoPO.getStatus().equals((byte) 1) || clientInfoPO.getStatus().equals(EnumActivationStatus.E_REACTIVE.getValue()))) {
+                return buildClientRegisterResultDTO(clientInfoPO, cdKeyPO);
             }
             throw new LicenseException(EnumResultCode.E_REPEAT_ACTIVATION_ERROR);
         }
