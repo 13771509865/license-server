@@ -205,8 +205,11 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
             ClientInfoPO clientInfoPO = clientInfoPOs.get(0);
             if (DateUtils.truncatedCompareTo(clientInfoPO.getExpireDate(), new Date(), Calendar.MILLISECOND) > 0) {
                 if (clientInfoPO.getStatus().equals((byte) 1)) {
-                    clientInfoPO.setStatus(EnumActivationStatus.E_REACTIVE.getValue());
-                    IResult<Integer> updateResult = clientRegisterService.updateClientInfo(clientInfoPO);
+                    ClientInfoPO clientInfoPONew = new ClientInfoPO();
+                    clientInfoPONew.setId(clientInfoPO.getId());
+                    clientInfoPONew.setStatus(EnumActivationStatus.E_REACTIVE.getValue());
+                    clientInfoPONew.setUpdateTime(new Date());
+                    IResult<Integer> updateResult = clientRegisterService.updateClientInfo(clientInfoPONew);
                     if (!updateResult.isSuccess()) {
                         log.error("重装激活时,更新clientInfo表status状态失败");
                     }
