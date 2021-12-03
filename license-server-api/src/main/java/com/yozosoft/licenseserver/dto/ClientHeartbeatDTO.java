@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class ClientHeartbeatDTO {
 
-    @NotBlank(message = "activationId is blank")
+    @NotNull(message = "activationId is blank")
     private Long activationId;
 
     private String ip;
