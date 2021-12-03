@@ -1,6 +1,7 @@
 package com.yozosoft.licenseserver.service.heartbeat.impl;
 
 import com.yozosoft.licenseserver.common.util.IResult;
+import com.yozosoft.licenseserver.constant.EnumActivationStatus;
 import com.yozosoft.licenseserver.constant.EnumResultCode;
 import com.yozosoft.licenseserver.dto.ClientHeartbeatDTO;
 import com.yozosoft.licenseserver.dto.ClientHeartbeatResultDTO;
@@ -56,7 +57,7 @@ public class ClientHeartbeatManagerImpl implements ClientHeartbeatManager {
         if (!boolProduct) {
             throw new LicenseException(EnumResultCode.E_HEARTBEAT_PRODUCT_MISMATCH);
         }
-        if (!cdKeyClientDTO.getStatus().equals((byte) 1)) {
+        if (!(cdKeyClientDTO.getStatus().equals((byte) 1) || cdKeyClientDTO.getStatus().equals(EnumActivationStatus.E_REACTIVE.getValue()))) {
             log.error("心跳验证时,status状态非正常");
             throw new LicenseException(EnumResultCode.E_HEARTBEAT_ERROR);
         }
