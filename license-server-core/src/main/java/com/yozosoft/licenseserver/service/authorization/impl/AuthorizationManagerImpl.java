@@ -134,7 +134,10 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
         clientInfoQO.setBiosId(equipmentQueryDTO.getBiosId());
         clientInfoQO.setMac(equipmentQueryDTO.getMac());
         clientInfoQO.setIp(IpUtils.inetAton(equipmentQueryDTO.getIp()));
-        PageInfo<EquipmentResultDTO> equipmentInfos = PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize()).doSelectPageInfo(() -> handleEquipmentResult(clientRegisterService.selectClientInfoByQuery(clientInfoQO)));
+        PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize());
+        List<EquipmentResultDTO> equipmentResultDTOS = handleEquipmentResult(clientRegisterService.selectClientInfoByQuery(clientInfoQO));
+        PageInfo<EquipmentResultDTO> equipmentInfos = new PageInfo<>(equipmentResultDTOS);
+//        PageInfo<EquipmentResultDTO> equipmentInfos = PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize()).doSelectPageInfo(() -> handleEquipmentResult(clientRegisterService.selectClientInfoByQuery(clientInfoQO)));
         return DefaultResult.successResult(equipmentInfos);
     }
 

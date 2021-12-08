@@ -28,7 +28,7 @@ public class IpUtils {
     }
 
     public static void main(String[] args) {
-        String s = inetNtoa(0);
+        String s = inetNtoa(2130706433);
         System.out.println(s);
     }
 }
