@@ -137,7 +137,6 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
         PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize());
         List<EquipmentResultDTO> equipmentResultDTOS = handleEquipmentResult(clientRegisterService.selectClientInfoByQuery(clientInfoQO));
         PageInfo<EquipmentResultDTO> equipmentInfos = new PageInfo<>(equipmentResultDTOS);
-//        PageInfo<EquipmentResultDTO> equipmentInfos = PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize()).doSelectPageInfo(() -> handleEquipmentResult(clientRegisterService.selectClientInfoByQuery(clientInfoQO)));
         return DefaultResult.successResult(equipmentInfos);
     }
 
