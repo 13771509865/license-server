@@ -10,7 +10,7 @@
     <result column="cpu_id" jdbcType="VARCHAR" property="cpuId" />
     <result column="bios_id" jdbcType="VARCHAR" property="biosId" />
     <result column="mac" jdbcType="VARCHAR" property="mac" />
-    <result column="ip" jdbcType="TINYINT" property="ip" />
+    <result column="ip" jdbcType="INTEGER" property="ip" />
     <result column="expire_date" jdbcType="TIMESTAMP" property="expireDate" />
   </resultMap>
   <resultMap id="CdKeyClientResultMap" type="com.yozosoft.licenseserver.model.dto.CdKeyClientDTO">
@@ -20,7 +20,7 @@
     <result column="cpu_id" jdbcType="VARCHAR" property="cpuId" />
     <result column="bios_id" jdbcType="VARCHAR" property="biosId" />
     <result column="mac" jdbcType="VARCHAR" property="mac" />
-    <result column="ip" jdbcType="TINYINT" property="ip" />
+    <result column="ip" jdbcType="INTEGER" property="ip" />
     <result column="expire_date" jdbcType="TIMESTAMP" property="expireDate" />
     <result column="product" jdbcType="TINYINT" property="product" />
     <result column="version" jdbcType="VARCHAR" property="version" />
@@ -136,7 +136,7 @@
         #{mac,jdbcType=VARCHAR},
       </if>
       <if test="ip != null">
-        #{ip,jdbcType=TINYINT},
+        #{ip,jdbcType=INTEGER},
       </if>
       <if test="expireDate != null">
         #{expireDate,jdbcType=TIMESTAMP},
@@ -168,7 +168,7 @@
         mac = #{mac,jdbcType=VARCHAR},
       </if>
       <if test="ip != null">
-        ip = #{ip,jdbcType=TINYINT},
+        ip = #{ip,jdbcType=INTEGER},
       </if>
       <if test="expireDate != null">
         expire_date = #{expireDate,jdbcType=TIMESTAMP},
