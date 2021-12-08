@@ -19,7 +19,7 @@ public class CdKeyClientDTO {
 
     private String mac;
 
-    private Byte ip;
+    private Integer ip;
 
     private Date expireDate;
 

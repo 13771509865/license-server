@@ -15,7 +15,7 @@ public class ClientInfoQO {
 
     private String mac;
 
-    private String ip;
+    private Integer ip;
 
     private Byte status;
 }

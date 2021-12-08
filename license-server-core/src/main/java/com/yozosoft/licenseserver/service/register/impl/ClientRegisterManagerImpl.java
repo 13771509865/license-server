@@ -15,6 +15,7 @@ import com.yozosoft.licenseserver.service.activation.ActivationService;
 import com.yozosoft.licenseserver.service.delayjob.DelayJobService;
 import com.yozosoft.licenseserver.service.register.ClientRegisterManager;
 import com.yozosoft.licenseserver.service.register.ClientRegisterService;
+import com.yozosoft.licenseserver.util.IpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.shardingsphere.core.strategy.keygen.SnowflakeShardingKeyGenerator;
@@ -163,8 +164,7 @@ public class ClientRegisterManagerImpl implements ClientRegisterManager {
         clientInfoPO.setBiosId(clientRegisterDTO.getBiosId());
         clientInfoPO.setCpuId(clientRegisterDTO.getCpuId());
         clientInfoPO.setMac(clientRegisterDTO.getMac());
-        //TODO ip转换还没做
-//        clientInfoPO.setIp(clientInfoPO.getIp());
+        clientInfoPO.setIp(IpUtils.inetAton(clientRegisterDTO.getIp()));
         clientInfoPO.setExpireDate(expireDate);
         return clientInfoPO;
     }

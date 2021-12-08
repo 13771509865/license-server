@@ -1,11 +1,12 @@
-package com.yozosoft.licenseserver.model.po;
+package com.yozosoft.licenseserver.dto;
 
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class ClientInfoPO {
+public class EquipmentResultDTO {
+
     private Long id;
 
     private Date createTime;
@@ -22,7 +23,7 @@ public class ClientInfoPO {
 
     private String mac;
 
-    private Integer ip;
+    private String ip;
 
     private Date expireDate;
 }

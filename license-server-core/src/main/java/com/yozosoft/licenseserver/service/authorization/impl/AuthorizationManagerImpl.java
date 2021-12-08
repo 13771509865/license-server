@@ -10,6 +10,7 @@ import com.yozosoft.licenseserver.dao.ActivationNumPOMapper;
 import com.yozosoft.licenseserver.dto.AuthorizationDTO;
 import com.yozosoft.licenseserver.dto.AuthorizationQueryDTO;
 import com.yozosoft.licenseserver.dto.EquipmentQueryDTO;
+import com.yozosoft.licenseserver.dto.EquipmentResultDTO;
 import com.yozosoft.licenseserver.exception.LicenseException;
 import com.yozosoft.licenseserver.model.dto.AuthorizationInfoDTO;
 import com.yozosoft.licenseserver.model.dto.PageDTO;
@@ -23,6 +24,7 @@ import com.yozosoft.licenseserver.service.activation.ActivationService;
 import com.yozosoft.licenseserver.service.authorization.AuthorizationManager;
 import com.yozosoft.licenseserver.service.authorization.AuthorizationService;
 import com.yozosoft.licenseserver.service.register.ClientRegisterService;
+import com.yozosoft.licenseserver.util.IpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.shardingsphere.core.strategy.keygen.SnowflakeShardingKeyGenerator;
@@ -125,26 +127,37 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
     }
 
     @Override
-    public IResult<PageInfo<ClientInfoPO>> selectEquipmentDetail(EquipmentQueryDTO equipmentQueryDTO, PageDTO pageDTO) {
+    public IResult<PageInfo<EquipmentResultDTO>> selectEquipmentDetail(EquipmentQueryDTO equipmentQueryDTO, PageDTO pageDTO) {
         ClientInfoQO clientInfoQO = new ClientInfoQO();
         clientInfoQO.setCdkeyId(equipmentQueryDTO.getCdkeyId());
         clientInfoQO.setCpuId(equipmentQueryDTO.getCpuId());
         clientInfoQO.setBiosId(equipmentQueryDTO.getBiosId());
         clientInfoQO.setMac(equipmentQueryDTO.getMac());
-        clientInfoQO.setIp(equipmentQueryDTO.getIp());
-        PageInfo<ClientInfoPO> clientInfos = PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize()).doSelectPageInfo(() -> handleExpiredStatus(clientRegisterService.selectClientInfoByQuery(clientInfoQO)));
-        return DefaultResult.successResult(clientInfos);
+        clientInfoQO.setIp(IpUtils.inetAton(equipmentQueryDTO.getIp()));
+        PageInfo<EquipmentResultDTO> equipmentInfos = PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize()).doSelectPageInfo(() -> handleEquipmentResult(clientRegisterService.selectClientInfoByQuery(clientInfoQO)));
+        return DefaultResult.successResult(equipmentInfos);
     }
 
-    private List<ClientInfoPO> handleExpiredStatus(IResult<List<ClientInfoPO>> clientInfos){
+    private List<EquipmentResultDTO> handleEquipmentResult(IResult<List<ClientInfoPO>> clientInfos){
         Date nowDate = new Date();
-        List<ClientInfoPO> clientInfoPOS = clientInfos.getData().stream().map(clientInfoPO -> {
+        List<EquipmentResultDTO> equipmentResultDTOS = clientInfos.getData().stream().map(clientInfoPO -> {
+            EquipmentResultDTO equipmentResultDTO = new EquipmentResultDTO();
+            equipmentResultDTO.setId(clientInfoPO.getId());
+            equipmentResultDTO.setCreateTime(clientInfoPO.getCreateTime());
+            equipmentResultDTO.setUpdateTime(clientInfoPO.getUpdateTime());
+            equipmentResultDTO.setStatus(clientInfoPO.getStatus());
             if (DateUtils.truncatedCompareTo(clientInfoPO.getExpireDate(), nowDate, Calendar.MILLISECOND) <= 0) {
-                clientInfoPO.setStatus(EnumActivationStatus.E_EXPIRED.getValue());
+                equipmentResultDTO.setStatus(EnumActivationStatus.E_EXPIRED.getValue());
             }
-            return clientInfoPO;
+            equipmentResultDTO.setCdkeyId(clientInfoPO.getCdkeyId());
+            equipmentResultDTO.setCpuId(clientInfoPO.getCpuId());
+            equipmentResultDTO.setBiosId(clientInfoPO.getBiosId());
+            equipmentResultDTO.setMac(clientInfoPO.getMac());
+            equipmentResultDTO.setIp(IpUtils.inetNtoa(clientInfoPO.getIp()));
+            equipmentResultDTO.setExpireDate(clientInfoPO.getExpireDate());
+            return equipmentResultDTO;
         }).collect(Collectors.toList());
-        return clientInfoPOS;
+        return equipmentResultDTOS;
     }
 
     private CdKeyPO checkPermitNum(Long cdKeyId, Integer permitNum) {

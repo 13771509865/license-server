@@ -6,11 +6,11 @@ import com.yozosoft.licenseserver.constant.EnumResultCode;
 import com.yozosoft.licenseserver.dto.AuthorizationDTO;
 import com.yozosoft.licenseserver.dto.AuthorizationQueryDTO;
 import com.yozosoft.licenseserver.dto.EquipmentQueryDTO;
+import com.yozosoft.licenseserver.dto.EquipmentResultDTO;
 import com.yozosoft.licenseserver.exception.LicenseException;
 import com.yozosoft.licenseserver.model.dto.AuthorizationInfoDTO;
 import com.yozosoft.licenseserver.model.dto.PageDTO;
 import com.yozosoft.licenseserver.model.po.CdKeyPO;
-import com.yozosoft.licenseserver.model.po.ClientInfoPO;
 import com.yozosoft.licenseserver.service.authorization.AuthorizationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -61,7 +60,7 @@ public class AuthorizationController {
 
     @GetMapping("/equipment")
     public ResponseEntity getEquipmentDetail(@Valid EquipmentQueryDTO equipmentQueryDTO, PageDTO pageDTO) {
-        IResult<PageInfo<ClientInfoPO>> getResult = authorizationManager.selectEquipmentDetail(equipmentQueryDTO, pageDTO);
+        IResult<PageInfo<EquipmentResultDTO>> getResult = authorizationManager.selectEquipmentDetail(equipmentQueryDTO, pageDTO);
         if (!getResult.isSuccess()) {
             throw new LicenseException(EnumResultCode.E_CLIENT_INFO_GET_ERROR);
         }
