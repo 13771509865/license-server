@@ -1,6 +1,7 @@
 package com.yozosoft.licenseserver.util;
 
 import com.google.common.net.InetAddresses;
+import org.apache.commons.lang3.StringUtils;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -8,12 +9,14 @@ import java.net.InetAddress;
 public class IpUtils {
 
     public static Integer inetAton(String ip) {
-        boolean isIp = InetAddresses.isInetAddress(ip);
-        if(isIp){
-            InetAddress inetAddress = InetAddresses.forString(ip);
-            return InetAddresses.coerceToInteger(inetAddress);
+        if(StringUtils.isNotBlank(ip)){
+            boolean isIp = InetAddresses.isInetAddress(ip);
+            if(isIp){
+                InetAddress inetAddress = InetAddresses.forString(ip);
+                return InetAddresses.coerceToInteger(inetAddress);
+            }
         }
-        return 0;
+        return null;
     }
 
     public static String inetNtoa(Integer ip) {
