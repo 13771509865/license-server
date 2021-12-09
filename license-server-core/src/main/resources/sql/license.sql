@@ -114,7 +114,7 @@ CREATE TABLE `client_info`  (
   `cpu_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `bios_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `mac` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `ip` int(10) UNSIGNED NULL DEFAULT NULL,
+  `ip` int(10) NULL DEFAULT NULL,
   `expire_date` datetime(3) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `index_cdk_bios_cpu`(`bios_id`, `cpu_id`, `cdkey_id`) USING BTREE
