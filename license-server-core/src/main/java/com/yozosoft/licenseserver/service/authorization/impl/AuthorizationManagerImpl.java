@@ -102,7 +102,7 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
                 if (numResult.isSuccess()) {
                     Integer increase = authorizationDTO.getPermitNum() - oldCdKeyPO.getPermitNum();
                     IResult<Integer> increaseResult = activationService.increaseActivationNumByOLock(authorizationDTO.getCdkeyId(), increase, activationNumPO.getUpdateTime());
-                    if(increaseResult.isSuccess()){
+                    if (increaseResult.isSuccess()) {
                         return DefaultResult.successResult();
                     }
                 }
@@ -127,39 +127,40 @@ public class AuthorizationManagerImpl implements AuthorizationManager {
     }
 
     @Override
-    public IResult<PageInfo<EquipmentResultDTO>> selectEquipmentDetail(EquipmentQueryDTO equipmentQueryDTO, PageDTO pageDTO) {
+    public IResult<PageInfo<Object>> selectEquipmentDetail(EquipmentQueryDTO equipmentQueryDTO, PageDTO pageDTO) {
         ClientInfoQO clientInfoQO = new ClientInfoQO();
         clientInfoQO.setCdkeyId(equipmentQueryDTO.getCdkeyId());
         clientInfoQO.setCpuId(equipmentQueryDTO.getCpuId());
         clientInfoQO.setBiosId(equipmentQueryDTO.getBiosId());
         clientInfoQO.setMac(equipmentQueryDTO.getMac());
         clientInfoQO.setIp(IpUtils.inetAton(equipmentQueryDTO.getIp()));
-        PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize());
-        List<EquipmentResultDTO> equipmentResultDTOS = handleEquipmentResult(clientRegisterService.selectClientInfoByQuery(clientInfoQO));
-        PageInfo<EquipmentResultDTO> equipmentInfos = new PageInfo<>(equipmentResultDTOS);
+        PageInfo<Object> clientInfoPOs = PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize()).doSelectPageInfo(() -> clientRegisterService.selectClientInfoByQuery(clientInfoQO));
+        PageInfo<Object> equipmentInfos = handleEquipmentResult(clientInfoPOs);
         return DefaultResult.successResult(equipmentInfos);
     }
 
-    private List<EquipmentResultDTO> handleEquipmentResult(IResult<List<ClientInfoPO>> clientInfos){
+    private PageInfo<Object> handleEquipmentResult(PageInfo<Object> clientInfoPOs) {
         Date nowDate = new Date();
-        List<EquipmentResultDTO> equipmentResultDTOS = clientInfos.getData().stream().map(clientInfoPO -> {
+        List<Object> equipmentResultDTOS = clientInfoPOs.getList().stream().map(clientInfoPO -> {
             EquipmentResultDTO equipmentResultDTO = new EquipmentResultDTO();
-            equipmentResultDTO.setId(clientInfoPO.getId());
-            equipmentResultDTO.setCreateTime(clientInfoPO.getCreateTime());
-            equipmentResultDTO.setUpdateTime(clientInfoPO.getUpdateTime());
-            equipmentResultDTO.setStatus(clientInfoPO.getStatus());
-            if (DateUtils.truncatedCompareTo(clientInfoPO.getExpireDate(), nowDate, Calendar.MILLISECOND) <= 0) {
+            ClientInfoPO clientInfoPOTmp = (ClientInfoPO) clientInfoPO;
+            equipmentResultDTO.setId(clientInfoPOTmp.getId());
+            equipmentResultDTO.setCreateTime(clientInfoPOTmp.getCreateTime());
+            equipmentResultDTO.setUpdateTime(clientInfoPOTmp.getUpdateTime());
+            equipmentResultDTO.setStatus(clientInfoPOTmp.getStatus());
+            if (DateUtils.truncatedCompareTo(clientInfoPOTmp.getExpireDate(), nowDate, Calendar.MILLISECOND) <= 0) {
                 equipmentResultDTO.setStatus(EnumActivationStatus.E_EXPIRED.getValue());
             }
-            equipmentResultDTO.setCdkeyId(clientInfoPO.getCdkeyId());
-            equipmentResultDTO.setCpuId(clientInfoPO.getCpuId());
-            equipmentResultDTO.setBiosId(clientInfoPO.getBiosId());
-            equipmentResultDTO.setMac(clientInfoPO.getMac());
-            equipmentResultDTO.setIp(IpUtils.inetNtoa(clientInfoPO.getIp()));
-            equipmentResultDTO.setExpireDate(clientInfoPO.getExpireDate());
+            equipmentResultDTO.setCdkeyId(clientInfoPOTmp.getCdkeyId());
+            equipmentResultDTO.setCpuId(clientInfoPOTmp.getCpuId());
+            equipmentResultDTO.setBiosId(clientInfoPOTmp.getBiosId());
+            equipmentResultDTO.setMac(clientInfoPOTmp.getMac());
+            equipmentResultDTO.setIp(IpUtils.inetNtoa(clientInfoPOTmp.getIp()));
+            equipmentResultDTO.setExpireDate(clientInfoPOTmp.getExpireDate());
             return equipmentResultDTO;
         }).collect(Collectors.toList());
-        return equipmentResultDTOS;
+        clientInfoPOs.setList(equipmentResultDTOS);
+        return clientInfoPOs;
     }
 
     private CdKeyPO checkPermitNum(Long cdKeyId, Integer permitNum) {

@@ -20,7 +20,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <skipTests>true</skipTests>
         <license-server.version>0.0.1-SNAPSHOT</license-server.version>
-        <pagehelper.version>1.4.0</pagehelper.version>
+        <pagehelper.version>1.4.1</pagehelper.version>
         <mysql-connector.version>8.0.27</mysql-connector.version>
         <mybatis.version>2.2.0</mybatis.version>
         <springfox.version>3.0.0</springfox.version>

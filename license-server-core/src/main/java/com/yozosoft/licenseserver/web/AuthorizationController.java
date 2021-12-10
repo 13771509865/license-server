@@ -60,7 +60,7 @@ public class AuthorizationController {
 
     @GetMapping("/equipment")
     public ResponseEntity getEquipmentDetail(@Valid EquipmentQueryDTO equipmentQueryDTO, PageDTO pageDTO) {
-        IResult<PageInfo<EquipmentResultDTO>> getResult = authorizationManager.selectEquipmentDetail(equipmentQueryDTO, pageDTO);
+        IResult<PageInfo<Object>> getResult = authorizationManager.selectEquipmentDetail(equipmentQueryDTO, pageDTO);
         if (!getResult.isSuccess()) {
             throw new LicenseException(EnumResultCode.E_CLIENT_INFO_GET_ERROR);
         }
