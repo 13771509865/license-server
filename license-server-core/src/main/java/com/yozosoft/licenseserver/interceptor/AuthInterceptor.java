@@ -17,9 +17,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 @Component
 @Slf4j
@@ -33,7 +30,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (StringUtils.isBlank(date) || StringUtils.isBlank(contentMd5) || StringUtils.isBlank(xAuth)) {
             throw new LicenseException(EnumResultCode.E_INVALID_HEADER, HttpStatus.BAD_REQUEST);
         }
-        if("zf".equals(contentMd5) && "zf".equals(xAuth)){
+        if ("zf".equals(contentMd5) && "zf".equals(xAuth)) {
             return true;
         }
         String bodyStr = StreamUtils.copyToString(request.getInputStream(), Charset.forName("UTF-8"));
@@ -42,9 +39,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             log.error("输入request body内容md5不匹配");
             throw new LicenseException(EnumResultCode.E_ILLEGAL_REQUEST, HttpStatus.FORBIDDEN);
         }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss 'GMT'", Locale.US);
-        Date parse = simpleDateFormat.parse(date);
-        String requestAuth = XAuthUtils.buildYozoAuth(parse, EnumProduct.E_OFFICE.getSecret(), requestMd5);
+        String requestAuth = XAuthUtils.buildYozoAuth(date, EnumProduct.E_OFFICE.getSecret(), requestMd5);
         if (!xAuth.equals(requestAuth)) {
             log.error("输入request auth不匹配");
             throw new LicenseException(EnumResultCode.E_ILLEGAL_REQUEST, HttpStatus.FORBIDDEN);
